@@ -4,34 +4,22 @@ import './styles/reset.css';
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 
-import App from './App.vue';
-
-const app = createApp(App);
-
-// vuetify
-import 'vuetify/styles';
-import { createVuetify } from 'vuetify';
-import * as components from 'vuetify/components';
-import * as directives from 'vuetify/directives';
-
-const vuetify = createVuetify({
-  components,
-  directives,
-});
+// flag icon
+import FlagIcon from 'vue-flag-icon';
 
 // vuetify
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faUserSecret);
+import vuetify from './vuetify';
 
 // importing custom css
 import './styles/main.css';
 
+// importing app component
+import App from './App.vue';
+
+const app = createApp(App);
+
+app.use(FlagIcon);
 app.use(vuetify);
 app.use(Toast);
-
-app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.mount('#app');
