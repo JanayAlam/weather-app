@@ -10,6 +10,8 @@ Technology Used: **Vue**, **Weather API**, **Vuetify**, etc.
 
 - On top of the application, there will be short temperature info about the current location. On the right side of the navigation bar, there will be a search bar. Users can search for any city’s temperature.
 
+- The website must have a dark mode and Japanese language Support.
+
 - Data caching should be implemented.
 
 - There will a feature to compare two or multiple city’s weather.
