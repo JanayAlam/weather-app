@@ -10,9 +10,7 @@
           <div class="icon-buttons">
             <search-bar />
             <!-- DROPDOWN BUTTON FOR CHANGING THE LANGUAGE -->
-            <div>
-              <language-switcher />
-            </div>
+            <language-switcher />
             <!-- ICON BUTTON FOR TOGGLE THE THEME -->
             <icon-button
               :on-click-handler="toggleTheme"
