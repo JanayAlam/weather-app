@@ -6,6 +6,10 @@
   box-sizing: 0;
 }
 
+html {
+  overflow-y: auto;
+}
+
 body {
   font-family: 'Inter', 'Roboto', sans-serif;
   font-size: 16px;
