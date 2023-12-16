@@ -1,34 +1,36 @@
 <template>
-  <v-app-bar
-    :elevation="0"
-    :class="!theme.global.current.value.dark && 'app-bar-light'"
-  >
-    <v-container>
-      <v-row no-gutters align="center">
-        <v-col cols="12" md="4" align="start"> Weather App </v-col>
-        <v-col cols="12" md="8" align="end">
-          <div class="icon-buttons">
-            <search-bar />
-            <!-- DROPDOWN BUTTON FOR CHANGING THE LANGUAGE -->
-            <language-switcher />
-            <!-- ICON BUTTON FOR TOGGLE THE THEME -->
-            <icon-button
-              :on-click-handler="toggleTheme"
-              :class="`icon-${
-                theme.global.current.value.dark ? 'sun' : 'moon'
-              }`"
-              :icons="`fas fa-${
-                theme.global.current.value.dark ? 'sun' : 'moon'
-              }`"
-              :title="`Activate ${
-                theme.global.current.value.dark ? 'light' : 'dark'
-              } mode`"
-            />
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-app-bar>
+  <v-sheet>
+    <v-app-bar
+      :elevation="0"
+      :class="!theme.global.current.value.dark && 'app-bar-light'"
+    >
+      <v-container>
+        <v-row no-gutters align="center">
+          <v-col cols="12" md="4" align="start"> Weather App </v-col>
+          <v-col cols="12" md="8" align="end">
+            <div class="icon-buttons">
+              <search-bar />
+              <!-- DROPDOWN BUTTON FOR CHANGING THE LANGUAGE -->
+              <language-switcher />
+              <!-- ICON BUTTON FOR TOGGLE THE THEME -->
+              <icon-button
+                :on-click-handler="toggleTheme"
+                :class="`icon-${
+                  theme.global.current.value.dark ? 'sun' : 'moon'
+                }`"
+                :icons="`fas fa-${
+                  theme.global.current.value.dark ? 'sun' : 'moon'
+                }`"
+                :title="`Activate ${
+                  theme.global.current.value.dark ? 'light' : 'dark'
+                } mode`"
+              />
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-app-bar>
+  </v-sheet>
 </template>
 
 <script setup>

@@ -1,6 +1,11 @@
 <template>
   <v-app>
     <navbar />
+    <v-main>
+      <v-container>
+        <router-view />
+      </v-container>
+    </v-main>
   </v-app>
 </template>
 
@@ -25,4 +30,8 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.position-sticky {
+  position: sticky;
+}
+</style>

@@ -16,12 +16,16 @@ import vuetify from './vuetify';
 // importing custom css
 import './styles/main.css';
 
+// importing routes
+import router from './router';
+
 // importing app component
 import App from './App.vue';
 
 const app = createApp(App);
 
 app.use(store);
+app.use(router);
 app.use(FlagIcon);
 app.use(vuetify);
 app.use(Toast);
