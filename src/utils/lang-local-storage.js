@@ -7,7 +7,6 @@ const LANGUAGES = ['en', 'jp', 'bd'];
  */
 export const setLanguage = (language) => {
   // checking if the given language is valid or not
-  console.log(language);
   language = LANGUAGES.includes(language) ? language : 'en';
   localStorage.setItem(KEY, JSON.stringify(language));
 };

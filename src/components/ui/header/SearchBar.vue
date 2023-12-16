@@ -1,10 +1,10 @@
 <template>
   <v-btn variant="flat" style="text-transform: capitalize; opacity: 0.7">
     <v-icon icon="fas fa-magnifying-glass" />
-    <span class="ml-3">{{ contents[lang].body }}</span>
+    <span class="ml-3">{{ contents[currentLang].body }}</span>
     <span class="ml-3 tip">Ctrl+K</span>
     <v-tooltip
-      :text="contents[lang].title"
+      :text="contents[currentLang].title"
       activator="parent"
       location="start"
     />
@@ -12,24 +12,26 @@
 </template>
 
 <script setup>
-import { getLanguage } from '../../../utils/lang-local-storage';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 
 const contents = {
   en: {
-    body: 'Search',
+    body: 'Search...',
     title: 'Search any city',
   },
   jp: {
-    body: '検索',
+    body: '検索...',
     title: '任意の都市を検索',
   },
   bd: {
-    body: 'অনুসন্ধান',
+    body: 'অনুসন্ধান...',
     title: 'শহর অনুসন্ধান করুন',
   },
 };
 
-const lang = getLanguage();
+const store = useStore();
+const currentLang = computed(() => store.getters.getCurrentLanguage);
 </script>
 
 <style scoped>

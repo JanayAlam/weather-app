@@ -4,6 +4,9 @@ import './styles/reset.css';
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 
+// store
+import store from './store';
+
 // flag icon
 import FlagIcon from 'vue-flag-icon';
 
@@ -18,6 +21,7 @@ import App from './App.vue';
 
 const app = createApp(App);
 
+app.use(store);
 app.use(FlagIcon);
 app.use(vuetify);
 app.use(Toast);

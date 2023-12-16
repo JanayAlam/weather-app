@@ -1,8 +1,8 @@
 <template>
   <v-btn>
     <div v-if="currentLang" class="language-switcher-container">
-      <flag :iso="currentLang.icon" :squared="true" />
-      <span class="ml-2">{{ currentLang.short }}</span>
+      <flag :iso="languages[currentLang].icon" :squared="true" />
+      <span class="ml-2">{{ languages[currentLang].short }}</span>
     </div>
     <v-menu activator="parent">
       <v-list>
@@ -10,7 +10,7 @@
           v-for="key in Object.keys(languages)"
           :key="languages[key].id"
           :value="languages[key].value"
-          @click="changeLang(languages[key])"
+          @click="changeLang(key)"
         >
           <v-list-item-title>
             <flag :iso="languages[key].icon" :squared="true" />
@@ -29,49 +29,23 @@
 </template>
 
 <script setup>
-import { setLanguage, getLanguage } from '../../../utils/lang-local-storage';
-import { onMounted } from 'vue';
-import { ref } from 'vue';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { setLanguage } from '../../../utils/lang-local-storage';
 
-const languages = {
-  en: {
-    id: 1,
-    value: 'en',
-    content: 'English',
-    short: 'ENG',
-    icon: 'GB',
-  },
-  jp: {
-    id: 2,
-    value: 'jp',
-    content: '日本語',
-    short: '日本語',
-    icon: 'JP',
-  },
-  bd: {
-    id: 3,
-    value: 'bd',
-    content: 'বাংলা',
-    short: 'বাংলা',
-    icon: 'BD',
-  },
-};
+const store = useStore();
 
-const currentLang = ref(null);
-
-onMounted(() => {
-  const lang = getLanguage();
-  changeLang(languages[lang] || languages.en);
-});
+const languages = computed(() => store.getters.getAllLanguages);
+const currentLang = computed(() => store.getters.getCurrentLanguage);
 
 /**
  * Save the object in the current language state and local storage.
  * @param {Object} languageObj the language object that will be saved
  */
-const changeLang = (languageObj) => {
-  currentLang.value = languageObj;
+const changeLang = (key) => {
+  store.dispatch('changeLanguage', key);
   // setting the language in the local storage
-  setLanguage(languageObj.value);
+  setLanguage(key || 'en');
 };
 </script>
 

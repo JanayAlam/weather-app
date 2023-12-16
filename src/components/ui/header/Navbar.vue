@@ -32,11 +32,11 @@
 </template>
 
 <script setup>
+import { useTheme } from 'vuetify';
+import { setTheme } from '../../../utils/theme-local-storage';
 import IconButton from '../../shared/buttons/IconButton.vue';
 import LanguageSwitcher from './LanguageSwitcher.vue';
 import SearchBar from './SearchBar.vue';
-import { setTheme } from '../../../utils/theme-local-storage';
-import { useTheme } from 'vuetify';
 
 const theme = useTheme();
 

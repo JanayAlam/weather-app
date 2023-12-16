@@ -6,11 +6,15 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import Navbar from './components/ui/header/Navbar.vue';
 import { useTheme } from 'vuetify';
+import { useStore } from 'vuex';
+import Navbar from './components/ui/header/Navbar.vue';
 import { getTheme } from './utils/theme-local-storage';
 
 const theme = useTheme();
+const store = useStore();
+
+store.dispatch('fetchLanguage');
 
 onMounted(() => {
   // setting theme from local storage
