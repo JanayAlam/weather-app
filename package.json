@@ -17,7 +17,6 @@
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "vue": "^3.3.11",
-    "vue-chartjs": "^5.3.0",
     "vue-flag-icon": "^2.1.0",
     "vue-router": "4",
     "vue-toastification": "^2.0.0-rc.5",

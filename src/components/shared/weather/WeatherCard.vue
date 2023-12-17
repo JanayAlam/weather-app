@@ -5,12 +5,28 @@
     }`"
   >
     <v-card-text>
-      <div class="subtitle">Current Weather</div>
-      <div class="title">{{ `${city.name}, ${city.country}` }}</div>
-      <div class="subtitle">
-        <clock v-if="showClock" :region="city.country" />
+      <div class="weather-card-header">
+        <div>
+          <div class="subtitle">Current Weather</div>
+          <div class="title">{{ `${city.name}, ${city.country}` }}</div>
+          <div class="subtitle">
+            <clock v-if="showClock" :region="city.country" />
+          </div>
+        </div>
+        <div class="sunrise-sunset-container">
+          <icon-text
+            :icon="'far fa-sun'"
+            :content="'6:00 AM'"
+            :title="'Sunrise at  6:00 AM'"
+          />
+          <icon-text
+            :icon="'far fa-moon fa-rotate-270'"
+            :content="'5:50 PM'"
+            :title="'Sunset at  5:50 PM'"
+          />
+        </div>
       </div>
-      <div class="temperature-section">
+      <div class="temperature-section p-all-1rem">
         <v-icon icon="fas fa-cloud-sun" class="temp-icon" />
         <div class="text-h2">64&deg;F</div>
         <div class="text-subtitle">
@@ -21,38 +37,57 @@
       <hr class="mt-5" style="opacity: 0.2" />
       <div>
         <v-row class="mt-5 align-items-center">
-          <weather-tip
-            :content="'9.4 Km/h'"
-            :icon="'wind'"
-            :title="'Wind speed 9.4 km/h in the direction of NSW'"
-            text-align="start"
-          />
-          <weather-tip
-            :content="'15&percnt; could'"
-            :icon="'cloud'"
-            :title="'15&percnt; could cover in the sky'"
-          />
-          <weather-tip
-            :content="'84&percnt; humidity'"
-            :icon="'water'"
-            :title="'84&percnt; humidity in the air'"
-          />
-          <weather-tip
-            :content="'1042 mb pressure'"
-            :icon="'atom'"
-            :title="'1042 millibar pressure in the air'"
-            :text-align="'end'"
+          <v-col>
+            <icon-text
+              :content="'9.4 Km/h'"
+              :icon="'fas fa-wind'"
+              :title="'Wind speed 9.4 km/h in the direction of NSW'"
+              text-align="start"
+            />
+          </v-col>
+
+          <v-col>
+            <icon-text
+              :content="'15&percnt; could'"
+              :icon="'fas fa-cloud'"
+              :title="'15&percnt; could cover in the sky'"
+            />
+          </v-col>
+          <v-col>
+            <icon-text
+              :content="'84&percnt; humidity'"
+              :icon="'fas fa-water'"
+              :title="'84&percnt; humidity in the air'"
+            />
+          </v-col>
+          <v-col>
+            <icon-text
+              :content="'1042 mb pressure'"
+              :icon="'fas fa-atom'"
+              :title="'1042 millibar pressure in the air'"
+              :text-align="'end'"
+            />
+          </v-col>
+        </v-row>
+        <v-row class="mt-5 p-all-1rem">
+          <weather-chart
+            :chart-id="city.name + new Date()"
+            :chart-data="chartData"
           />
         </v-row>
       </div>
     </v-card-text>
+    <!-- <v-card-actions>
+      <v-btn variant="tonal" color="error">Delete</v-btn>
+    </v-card-actions> -->
   </v-card>
 </template>
 
 <script setup>
 import { useTheme } from 'vuetify';
-import Clock from '../clock/Clock.vue';
-import WeatherTip from './WeatherTip.vue';
+import Clock from '../clock-view/Clock.vue';
+import IconText from '../icon-text/IconText.vue';
+import WeatherChart from './WeatherChart.vue';
 
 const props = defineProps({
   city: Object,
@@ -60,12 +95,22 @@ const props = defineProps({
 });
 
 const theme = useTheme();
+
+const chartData = {
+  labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+  datasets: [
+    {
+      data: [65, 64, 60, 57, 57, 58, 55],
+    },
+  ],
+};
 </script>
 
 <style scoped>
 .weather-card {
   box-shadow: none;
   font-family: 'Inter';
+  position: relative;
 }
 
 .weather-card-light {
@@ -74,6 +119,18 @@ const theme = useTheme();
 
 .weather-card-dark {
   border: 1px solid #242424;
+}
+
+.weather-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sunrise-sunset-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .title {
@@ -88,10 +145,13 @@ const theme = useTheme();
 
 .temperature-section {
   margin-top: 0.5rem;
-  padding: 1rem;
   display: flex;
   gap: 2rem;
   align-items: center;
+}
+
+.p-all-1rem {
+  padding: 1rem;
 }
 
 .temp-icon {
