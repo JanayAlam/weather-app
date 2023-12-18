@@ -1,0 +1,92 @@
+{
+  "location": {
+    "name": "String",
+    "country": "String",
+    "lat": "String",
+    "log": "String",
+    "tzId": "String"
+  },
+  "current": {
+    "lastUpdated": "String",
+    "temp": {
+      "c": "Number",
+      "f": "Number"
+    },
+    "condition": {
+      "code": "Number",
+      "icon": "String",
+      "text": {
+        "bd": "String",
+        "jp": "String",
+        "en": "String"
+      }
+    },
+    "wind": {
+      "speed": "Number",
+      "degree": "Number",
+      "direction": "String"
+    },
+    "pressure": "Number",
+    "humidity": "Number",
+    "cloud": "Number",
+    "feelsLike": {
+      "c": "Number",
+      "f": "Number"
+    },
+    "visibility": "Number",
+    "uv": "Number",
+    "windGust": "Number"
+  },
+  "forecasts": [
+    {
+      "date": "date",
+      "temp": {
+        "min": {
+          "c": "Number",
+          "f": "Number"
+        },
+        "avg": {
+          "c": "Number",
+          "f": "Number"
+        },
+        "max": {
+          "c": "Number",
+          "f": "Number"
+        }
+      },
+      "condition": {
+        "code": "Number",
+        "icon": "String",
+        "text": {
+          "bd": "String",
+          "jp": "String",
+          "en": "String"
+        }
+      },
+      "wind": {
+        "min": "Number",
+        "avg": "Number",
+        "max": "Number"
+      },
+      "visibility": {
+        "min": "Number",
+        "avg": "Number",
+        "max": "Number"
+      },
+      "humidity": {
+        "min": "Number",
+        "avg": "Number",
+        "max": "Number"
+      },
+      "chanceOfRain": "Boolean",
+      "chanceOfSnowFall": "Boolean",
+      "uv": "Boolean",
+      "astro": {
+        "sunrise": "String",
+        "sunset": "String",
+        "moonrise": "String",
+        "moonset": "String"
+      }
+    }
+  ]
+}

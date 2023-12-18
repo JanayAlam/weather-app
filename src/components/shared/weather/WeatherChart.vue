@@ -30,7 +30,7 @@ const config = {
       },
     },
     elements: {
-      point: { borderWidth: 10, hoverBorderWidth: 15 },
+      point: { borderWidth: 1 },
     },
     animations: {
       tension: {
@@ -43,7 +43,11 @@ const config = {
     },
     plugins: {
       legend: {
-        display: false,
+        labels: {
+          usePointStyle: true,
+        },
+        position: 'top',
+        align: 'start',
       },
     },
   },
@@ -52,7 +56,7 @@ const config = {
 onMounted(() => {
   const ctx = document.getElementById(`weather-chart-${props.chartId}`);
   const chart = new Chart(ctx, config);
-  chart.canvas.parentNode.style.height = '250px';
+  chart.canvas.parentNode.style.height = '200px';
 });
 </script>
 
