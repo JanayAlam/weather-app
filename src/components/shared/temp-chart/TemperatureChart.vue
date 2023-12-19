@@ -19,11 +19,10 @@ const config = {
     scales: {
       x: {
         grid: {
-          display: false,
+          display: true,
         },
       },
       y: {
-        min: 0,
         grid: {
           display: false,
         },
@@ -47,7 +46,7 @@ const config = {
           usePointStyle: true,
         },
         position: 'top',
-        align: 'start',
+        align: 'center',
       },
     },
   },

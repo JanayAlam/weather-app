@@ -2,21 +2,21 @@
   <div class="card-container">
     <div class="card-controls">
       <icon-button
-        icons="fas fa-maximize'"
-        :color="'primary'"
-        :variant="'flat'"
+        icons="fas fa-rotate"
+        color="primary"
+        variant="flat"
         :on-click-handler="() => {}"
       />
       <icon-button
-        icons="fas fa-rotate"
-        :color="'primary'"
-        :variant="'flat'"
+        icons="fas fa-up-right-and-down-left-from-center"
+        color="primary"
+        variant="flat"
         :on-click-handler="() => {}"
       />
       <icon-button
         icons="fas fa-trash"
-        :color="'error'"
-        :variant="'flat'"
+        color="error"
+        variant="flat"
         :on-click-handler="() => {}"
       />
     </div>
@@ -53,63 +53,65 @@
             />
           </div>
         </div>
-        <div class="temperature-section p-all-1rem">
-          <v-icon icon="fas fa-cloud-sun" class="temp-icon" />
-          <div class="text-h2">{{ weather.current.temp.c }}&deg;C</div>
-          <div class="text-subtitle">
-            <div>{{ weather.current.condition.text.en }}</div>
-            <div>Feels like {{ weather.current.feelsLike.c }}&deg;C</div>
-          </div>
-        </div>
+        <temperature
+          :is-celsius="true"
+          :temp="weather.current.temp"
+          :condition="weather.current.condition"
+          :feels-like="weather.current.feelsLike"
+        />
         <v-sheet class="mt-2" color="transparent">
-          <p class="font-weight-regular" style="color: #e53935">
-            {{ weather.uv }}
+          <p class="font-weight-bold" style="color: #e53935">
+            {{ weather.current.uv }} UV
           </p>
         </v-sheet>
         <hr class="mt-5" style="opacity: 0.2" />
-        <div>
-          <v-row class="mt-5 align-items-center weather-tip-container">
-            <icon-text
-              :content="weather.current.wind.speed"
-              :icon="'fas fa-wind'"
-              :title="`Wind speed ${weather.current.wind.speed} km/h in the direction of ${weather.current.wind.direction}`"
-              text-align="start"
-            />
-            <icon-text
-              :content="`${weather.current.cloud}&percnt; could`"
-              :icon="'fas fa-cloud'"
-              :title="`${weather.current.cloud}&percnt; could cover in the sky`"
-            />
-            <icon-text
-              :content="`${weather.current.humidity}&percnt;`"
-              :icon="'fas fa-water'"
-              :title="`${weather.current.humidity}&percnt; humidity in the air`"
-            />
-            <icon-text
-              :content="`${weather.current.pressure} mb`"
-              :icon="'fas fa-atom'"
-              :title="`${weather.current.pressure} millibar pressure in the air`"
-              :text-align="'end'"
-            />
-          </v-row>
-          <v-row class="mt-5 p-all-1rem">
-            <weather-chart
-              :chart-id="weather.location.name + new Date() + Math.random()"
-              :chart-data="chartData"
-            />
-          </v-row>
-        </div>
+
+        <v-row class="mt-5 align-items-center weather-tip-container">
+          <icon-text
+            :content="weather.current.wind.speed"
+            :icon="'fas fa-wind'"
+            :title="`Wind speed ${weather.current.wind.speed} km/h in the direction of ${weather.current.wind.direction}`"
+            text-align="start"
+          />
+          <icon-text
+            :content="`${weather.current.cloud}&percnt; could`"
+            :icon="'fas fa-cloud'"
+            :title="`${weather.current.cloud}&percnt; could cover in the sky`"
+          />
+          <icon-text
+            :content="`${weather.current.humidity}&percnt;`"
+            :icon="'fas fa-water'"
+            :title="`${weather.current.humidity}&percnt; humidity in the air`"
+          />
+          <icon-text
+            :content="`${weather.current.pressure} mb`"
+            :icon="'fas fa-atom'"
+            :title="`${weather.current.pressure} millibar pressure in the air`"
+            :text-align="'end'"
+          />
+        </v-row>
+        <v-row class="mt-5 p-all-1rem">
+          <temperature-chart
+            :chart-id="
+              weather.location.name + new Date() + Math.random() + Math.random()
+            "
+            :chart-data="chartData"
+          />
+        </v-row>
       </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { useTheme } from 'vuetify';
+import { useStore } from 'vuex';
+import IconButton from '../buttons/IconButton.vue';
 import Clock from '../clock-view/Clock.vue';
 import IconText from '../icon-text/IconText.vue';
-import WeatherChart from './WeatherChart.vue';
-import IconButton from '../buttons/IconButton.vue';
+import TemperatureChart from '../temp-chart/TemperatureChart.vue';
+import Temperature from './Temperature.vue';
 
 const props = defineProps({
   weather: Object,
@@ -117,6 +119,9 @@ const props = defineProps({
 });
 
 const theme = useTheme();
+const store = useStore();
+
+const currentLanguage = computed(() => store.getters.getCurrentLanguage);
 
 const chartData = {
   labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -143,6 +148,10 @@ const chartData = {
 }
 
 .card-controls {
+  display: none;
+}
+
+.card-container:hover .card-controls {
   position: absolute;
   z-index: 2;
   width: 4rem;
@@ -199,23 +208,8 @@ const chartData = {
   opacity: 0.8;
 }
 
-.temperature-section {
-  margin-top: 0.5rem;
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-}
-
 .p-all-1rem {
   padding: 1rem;
-}
-
-.temp-icon {
-  font-size: 5rem;
-}
-
-.temp {
-  font-size: 3rem;
 }
 
 .align-items-center {

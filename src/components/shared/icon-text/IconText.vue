@@ -8,7 +8,7 @@
 
 <script setup>
 defineProps({
-  content: String,
+  content: [String, Number],
   icon: String,
   title: String,
 });

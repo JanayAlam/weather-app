@@ -20,9 +20,9 @@
 </template>
 
 <script setup>
-import WeatherCard from '../components/shared/weather/WeatherCard.vue';
+import { onMounted, ref } from 'vue';
 import getWeatherInfo from '../api/dummy/fetch-weather';
-import { ref, onMounted } from 'vue';
+import WeatherCard from '../components/shared/weather/WeatherCard.vue';
 
 const isLoading = ref(true);
 const dhakaWeather = ref(null);
@@ -31,7 +31,6 @@ const miyazakiWeather = ref(null);
 onMounted(() => {
   dhakaWeather.value = getWeatherInfo();
   miyazakiWeather.value = getWeatherInfo();
-  console.log(dhakaWeather.value);
   isLoading.value = true;
 });
 </script>
