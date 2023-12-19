@@ -30,4 +30,8 @@ app.use(FlagIcon);
 app.use(vuetify);
 app.use(Toast);
 
+import fetchAstro from './api/fetch-astro';
+
+fetchAstro({ q: 'Dhaka' });
+
 app.mount('#app');

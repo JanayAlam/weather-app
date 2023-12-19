@@ -12,6 +12,7 @@ import { useStore } from 'vuex';
 
 const props = defineProps({
   region: String,
+  tzId: String,
 });
 
 const store = useStore();

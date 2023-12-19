@@ -35,7 +35,17 @@
     },
     "visibility": "Number",
     "uv": "Number",
-    "windGust": "Number"
+    "windGust": "Number",
+    "air_quality": {
+      "co": "Number",
+      "no2": "Number",
+      "o3": "Number",
+      "so2": "Number",
+      "pm2_5": "Number",
+      "pm10": "Number",
+      "us-epa-index": "Number",
+      "gb-defra-index": "Number"
+    }
   },
   "forecasts": [
     {
@@ -63,21 +73,9 @@
           "en": "String"
         }
       },
-      "wind": {
-        "min": "Number",
-        "avg": "Number",
-        "max": "Number"
-      },
-      "visibility": {
-        "min": "Number",
-        "avg": "Number",
-        "max": "Number"
-      },
-      "humidity": {
-        "min": "Number",
-        "avg": "Number",
-        "max": "Number"
-      },
+      "wind": "Number",
+      "visibility": "Number",
+      "humidity": "Number",
       "chanceOfRain": "Boolean",
       "chanceOfSnowFall": "Boolean",
       "uv": "Boolean",
