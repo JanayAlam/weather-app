@@ -15,7 +15,7 @@
           : title[currentLanguage] || null
       "
       activator="parent"
-      location="start"
+      :location="location"
     />
   </div>
 </template>
@@ -38,6 +38,11 @@ const props = defineProps({
   title: {
     type: [Object, String, Number],
     required: true,
+  },
+  location: {
+    type: String,
+    required: false,
+    default: 'top',
   },
 });
 
