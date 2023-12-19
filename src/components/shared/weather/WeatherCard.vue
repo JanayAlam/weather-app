@@ -68,30 +68,59 @@
 
         <v-row class="mt-5 align-items-center weather-tip-container">
           <icon-text
-            :content="weather.current.wind.speed"
-            :icon="'fas fa-wind'"
-            :title="`Wind speed ${weather.current.wind.speed} km/h in the direction of ${weather.current.wind.direction}`"
+            :content="{
+              en: `${weather.current.wind.speed} km/h`,
+              bd: `${weather.current.wind.speed} কি.মি./ঘন্টা`,
+              jp: `${weather.current.wind.speed} キロメートル時速`,
+            }"
+            icon="fas fa-wind"
+            :title="{
+              en: `Wind speed ${weather.current.wind.speed} km/h from the direction of ${weather.current.wind.direction}`,
+              bd: `${weather.current.wind.direction} দিক থেকে ${weather.current.wind.speed} কিলোমিটার বেগে বাতাস বেয়ে চলছে`,
+              jp: `時速${weather.current.wind.speed}キロメートル、${weather.current.wind.direction}から方向`,
+            }"
             text-align="start"
           />
           <icon-text
-            :content="`${weather.current.cloud}&percnt; could`"
+            :content="{
+              en: `${weather.current.cloud}&percnt; cloud`,
+              bd: `${weather.current.cloud}&percnt; মেঘ`,
+              jp: `${weather.current.cloud}&percnt; 雲`,
+            }"
             :icon="'fas fa-cloud'"
-            :title="`${weather.current.cloud}&percnt; could cover in the sky`"
+            :title="{
+              en: `${weather.current.cloud}&percnt; of the sky is cloudy`,
+              bd: `${weather.current.cloud}&percnt; আকাশ মেঘাচ্ছন্ন হয়ে আছে`,
+              jp: `空の${weather.current.cloud}&percnt;が曇っています`,
+            }"
           />
           <icon-text
             :content="`${weather.current.humidity}&percnt;`"
             :icon="'fas fa-water'"
-            :title="`${weather.current.humidity}&percnt; humidity in the air`"
+            :title="{
+              en: `${weather.current.humidity}&percnt; humidity in the air`,
+              bd: `আর্দ্রতা ${weather.current.humidity}&percnt;`,
+              jp: `湿度${weather.current.humidity}&percnt;`,
+            }"
           />
           <icon-text
-            :content="`${weather.current.pressure} mb`"
+            :content="{
+              en: `${weather.current.pressure} mb`,
+              bd: `${weather.current.pressure} মিলিবার`,
+              jp: `${weather.current.pressure} ミリバール`,
+            }"
             :icon="'fas fa-atom'"
-            :title="`${weather.current.pressure} millibar pressure in the air`"
+            :title="{
+              en: `${weather.current.pressure} millibar pressure in the air`,
+              bd: `বাতাসে চাপ ${weather.current.pressure} মিলিবার`,
+              jp: `空気圧${weather.current.pressure}ミリバール`,
+            }"
             :text-align="'end'"
           />
         </v-row>
         <v-row class="mt-5 p-all-1rem">
           <temperature-chart
+            v-if="chartData !== null"
             :chart-id="
               weather.location.name + new Date() + Math.random() + Math.random()
             "
@@ -104,42 +133,35 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import { useStore } from 'vuex';
+import generateChartDataset from '../../../utils/chart-dataset';
 import IconButton from '../buttons/IconButton.vue';
 import Clock from '../clock-view/Clock.vue';
 import IconText from '../icon-text/IconText.vue';
 import TemperatureChart from '../temp-chart/TemperatureChart.vue';
 import Temperature from './Temperature.vue';
 
+const theme = useTheme();
+const store = useStore();
+
+const chartData = ref(null);
+
 const props = defineProps({
   weather: Object,
   showClock: Boolean,
 });
 
-const theme = useTheme();
-const store = useStore();
+onMounted(() => {
+  const chartDataset = generateChartDataset([...props.weather.forecasts]);
+  chartData.value = {
+    labels: chartDataset.labels,
+    datasets: chartDataset.c,
+  };
+});
 
 const currentLanguage = computed(() => store.getters.getCurrentLanguage);
-
-const chartData = {
-  labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-  datasets: [
-    {
-      label: 'Min Temp',
-      data: [20, 25, 24, 23, 22, 22, 21],
-    },
-    {
-      label: 'Avg Temp',
-      data: [50, 48, 41, 42, 40, 40, 41],
-    },
-    {
-      label: 'Max Temp',
-      data: [65, 64, 60, 57, 57, 58, 55],
-    },
-  ],
-};
 </script>
 
 <style scoped>
