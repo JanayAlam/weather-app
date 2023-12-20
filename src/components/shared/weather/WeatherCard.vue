@@ -7,20 +7,21 @@
           tempUnit === 'c' ? 'fahrenheit' : 'celsius'
         } scale`"
         tooltipLocation="start"
-        color="primary"
-        variant="flat"
+        color="info"
+        variant="elevated"
         :on-click-handler="toggleTempUnit"
       />
       <icon-button
         icons="fas fa-up-right-and-down-left-from-center"
         color="primary"
-        variant="flat"
+        variant="elevated"
         :on-click-handler="() => {}"
       />
       <icon-button
+        v-if="isDeleteAble"
         icons="fas fa-trash"
         color="error"
-        variant="flat"
+        variant="elevated"
         :on-click-handler="() => {}"
       />
     </div>
@@ -31,23 +32,7 @@
     >
       <v-card-text>
         <div class="weather-card-header">
-          <div>
-            <div class="subtitle">Current Weather</div>
-            <div class="title">
-              {{
-                `${weather.location.region || weather.location.name}, ${
-                  weather.location.country
-                }`
-              }}
-            </div>
-            <div class="subtitle">
-              <clock
-                v-if="showClock"
-                :region="weather.location.country"
-                :tzId="weather.location.tzId"
-              />
-            </div>
-          </div>
+          <weather-card-header-info :location="weather.location" />
           <div class="sunrise-sunset-container">
             <icon-text
               :icon="'far fa-sun'"
@@ -148,10 +133,10 @@ import { computed, onMounted, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import generateChartDataset from '../../../utils/chart-dataset';
 import IconButton from '../buttons/IconButton.vue';
-import Clock from '../clock-view/Clock.vue';
 import IconText from '../icon-text/IconText.vue';
 import LineChart from '../temp-chart/LineChart.vue';
 import Temperature from './Temperature.vue';
+import WeatherCardHeaderInfo from './WeatherCardHeaderInfo.vue';
 
 const theme = useTheme();
 
@@ -159,8 +144,14 @@ const tempUnit = ref('c');
 const chartDataset = ref(null);
 
 const props = defineProps({
-  weather: Object,
-  showClock: Boolean,
+  weather: {
+    type: Object,
+    required: true,
+  },
+  isDeleteAble: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 onMounted(() => {
@@ -238,16 +229,6 @@ const chartData = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.title {
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-.subtitle {
-  margin-top: 0.2rem;
-  opacity: 0.8;
 }
 
 .p-all-1rem {

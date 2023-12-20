@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 import { bn, enUS, ja } from 'date-fns/locale';
 import { computed, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue';
 import { useStore } from 'vuex';
-import { utcToZonedTime } from 'date-fns-tz';
+import { getCurrentDateTime } from '../../../utils/date-time';
 
 const props = defineProps({
   region: String,
@@ -51,14 +51,9 @@ const changeClock = () => {
       ? bn
       : enUS;
   interval.value = setInterval(() => {
-    time.value = format(getCurrentDateTime(), 'h:mm:ss');
-    a.value = format(getCurrentDateTime(), 'a', { locale });
+    time.value = format(getCurrentDateTime(props.tzId), 'hh:mm:ss');
+    a.value = format(getCurrentDateTime(props.tzId), 'a', { locale });
   }, 1000);
-};
-
-const getCurrentDateTime = () => {
-  const date = new Date();
-  return utcToZonedTime(date, props.tzId);
 };
 </script>
 
@@ -68,6 +63,6 @@ const getCurrentDateTime = () => {
   align-items: center;
 }
 .clock {
-  min-width: 60px;
+  min-width: 65px;
 }
 </style>

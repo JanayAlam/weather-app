@@ -5,7 +5,7 @@
       <weather-card
         v-if="dhakaWeather"
         :weather="dhakaWeather"
-        :showClock="true"
+        :is-delete-able="false"
       />
     </v-col>
     <!-- MIYAZAKI -->
@@ -13,7 +13,7 @@
       <weather-card
         v-if="miyazakiWeather"
         :weather="miyazakiWeather"
-        :showClock="true"
+        :is-delete-able="false"
       />
     </v-col>
   </v-row>
