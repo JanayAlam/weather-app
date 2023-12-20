@@ -5,7 +5,7 @@
       v-if="title"
       :text="title || ''"
       activator="parent"
-      location="bottom"
+      :location="tooltipLocation"
     />
   </v-btn>
 </template>
@@ -27,6 +27,10 @@ const props = defineProps({
   icons: {
     type: String,
     required: true,
+  },
+  tooltipLocation: {
+    type: String,
+    default: 'bottom',
   },
 });
 </script>

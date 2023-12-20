@@ -2,10 +2,14 @@
   <div class="card-container">
     <div class="card-controls">
       <icon-button
-        icons="fas fa-rotate"
+        :icons="`fas fa-${tempUnit === 'c' ? 'f' : 'c'}`"
+        :title="`Change to ${
+          tempUnit === 'c' ? 'fahrenheit' : 'celsius'
+        } scale`"
+        tooltipLocation="start"
         color="primary"
         variant="flat"
-        :on-click-handler="() => {}"
+        :on-click-handler="toggleTempUnit"
       />
       <icon-button
         icons="fas fa-up-right-and-down-left-from-center"
@@ -60,7 +64,7 @@
           </div>
         </div>
         <temperature
-          :is-celsius="true"
+          :is-celsius="tempUnit === 'c'"
           :temp="weather.current.temp"
           :condition="weather.current.condition"
           :feels-like="weather.current.feelsLike"
@@ -131,6 +135,7 @@
               weather.location.name + new Date() + Math.random() + Math.random()
             "
             :chart-data="chartData"
+            :is-celsius="tempUnit === 'c'"
           />
         </v-row>
       </v-card-text>
@@ -139,9 +144,8 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useTheme } from 'vuetify';
-import { useStore } from 'vuex';
 import generateChartDataset from '../../../utils/chart-dataset';
 import IconButton from '../buttons/IconButton.vue';
 import Clock from '../clock-view/Clock.vue';
@@ -150,8 +154,8 @@ import TemperatureChart from '../temp-chart/TemperatureChart.vue';
 import Temperature from './Temperature.vue';
 
 const theme = useTheme();
-const store = useStore();
 
+const tempUnit = ref('c');
 const chartData = ref(null);
 
 const props = defineProps({
@@ -160,14 +164,12 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  const chartDataset = generateChartDataset([...props.weather.forecasts]);
-  chartData.value = {
-    labels: chartDataset.labels,
-    datasets: chartDataset.c,
-  };
+  chartData.value = generateChartDataset([...props.weather.forecasts]);
 });
 
-const currentLanguage = computed(() => store.getters.getCurrentLanguage);
+const toggleTempUnit = () => {
+  tempUnit.value = tempUnit.value === 'c' ? 'f' : 'c';
+};
 </script>
 
 <style scoped>
