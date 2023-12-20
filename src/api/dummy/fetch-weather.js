@@ -1,3 +1,4 @@
+import convertConditionCodes from '../../utils/convert-condition-codes';
 import getAstroInfo from './fetch-astro';
 
 /**
@@ -20,14 +21,11 @@ const getWeatherInfo = (queriesObj, date = new Date()) => {
         c: 24.5,
         f: 76.1,
       },
+      isDay: false,
       condition: {
         code: 1000,
         icon: '//cdn.weatherapi.com/weather/64x64/day/113.png',
-        text: {
-          bd: 'সূর্যোজ্জ্বল', // check the isDay property
-          jp: '晴れ', // check the isDay property
-          en: 'Sunny',
-        },
+        text: convertConditionCodes(1000, true),
       },
       wind: {
         speed: 10.8,

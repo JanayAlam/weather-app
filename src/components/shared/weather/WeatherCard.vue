@@ -7,7 +7,7 @@
           tempUnit === 'c' ? 'fahrenheit' : 'celsius'
         } scale`"
         tooltipLocation="start"
-        color="info"
+        color="orange-darken-4"
         variant="elevated"
         :on-click-handler="toggleTempUnit"
       />

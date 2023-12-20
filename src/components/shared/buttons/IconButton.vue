@@ -1,6 +1,12 @@
 <template>
-  <v-btn @click="onClickHandler" density="comfortable" icon="" variant="tonal">
-    <v-icon :icon="icons || ''" :class="classes || '' + ' icon'" />
+  <v-btn
+    @click="onClickHandler"
+    :class="btnClasses"
+    density="comfortable"
+    icon=""
+    :variant="variant"
+  >
+    <v-icon :icon="icons || ''" :class="classes + ' icon'" />
     <v-tooltip
       v-if="title"
       :text="title || ''"
@@ -22,7 +28,11 @@ const props = defineProps({
   },
   classes: {
     type: String,
-    required: false,
+    default: '',
+  },
+  btnClasses: {
+    type: String,
+    default: '',
   },
   icons: {
     type: String,
@@ -31,6 +41,10 @@ const props = defineProps({
   tooltipLocation: {
     type: String,
     default: 'bottom',
+  },
+  variant: {
+    type: String,
+    default: 'tonal',
   },
 });
 </script>
