@@ -879,6 +879,11 @@ vitest@^1.0.4:
     vite-node "1.0.4"
     why-is-node-running "^2.2.2"
 
+vue-chartjs@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/vue-chartjs/-/vue-chartjs-5.3.0.tgz#59920a07d72f37a2375d495256e486b92813bf6e"
+  integrity sha512-8XqX0JU8vFZ+WA2/knz4z3ThClduni2Nm0BMe2u0mXgTfd9pXrmJ07QBI+WAij5P/aPmPMX54HCE1seWL37ZdQ==
+
 vue-flag-icon@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vue-flag-icon/-/vue-flag-icon-2.1.0.tgz#9bd99df3a9174f7df3704108c407014db83500a0"

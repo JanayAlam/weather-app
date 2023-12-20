@@ -129,14 +129,14 @@
           />
         </v-row>
         <v-row class="mt-5 p-all-1rem">
-          <temperature-chart
-            v-if="chartData !== null"
+          <line-chart
+            v-if="chartDataset !== null"
             :chart-id="
               weather.location.name + new Date() + Math.random() + Math.random()
             "
-            :chart-data="chartData"
+            :chartData="chartDataset"
             :is-celsius="tempUnit === 'c'"
-          />
+          ></line-chart>
         </v-row>
       </v-card-text>
     </v-card>
@@ -144,19 +144,19 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useTheme } from 'vuetify';
 import generateChartDataset from '../../../utils/chart-dataset';
 import IconButton from '../buttons/IconButton.vue';
 import Clock from '../clock-view/Clock.vue';
 import IconText from '../icon-text/IconText.vue';
-import TemperatureChart from '../temp-chart/TemperatureChart.vue';
+import LineChart from '../temp-chart/LineChart.vue';
 import Temperature from './Temperature.vue';
 
 const theme = useTheme();
 
 const tempUnit = ref('c');
-const chartData = ref(null);
+const chartDataset = ref(null);
 
 const props = defineProps({
   weather: Object,
@@ -164,12 +164,24 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  chartData.value = generateChartDataset([...props.weather.forecasts]);
+  chartDataset.value = generateChartDataset([...props.weather.forecasts]);
 });
 
 const toggleTempUnit = () => {
   tempUnit.value = tempUnit.value === 'c' ? 'f' : 'c';
 };
+
+const chartData = computed(() => {
+  const data = {
+    labels: chartData.value.labels,
+  };
+  if (tempUnit === 'c') {
+    data.datasets = chartData.value.c;
+  } else {
+    data.datasets = chartData.value.f;
+  }
+  return data;
+});
 </script>
 
 <style scoped>
