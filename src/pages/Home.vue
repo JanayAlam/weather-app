@@ -31,17 +31,43 @@
 import { onMounted, ref } from 'vue';
 import getWeatherInfo from '../api/fetch-weather';
 import WeatherCard from '../components/shared/weather/WeatherCard.vue';
+import {
+  cacheDhaka,
+  cacheMiyazaki,
+  getCacheValueDhaka,
+  getCacheValueMiyazaki,
+} from '../utils/caching-local-storage';
 
 const isLoading = ref(true);
 const dhakaWeather = ref(null);
 const miyazakiWeather = ref(null);
 
 onMounted(async () => {
-  const dhakaRes = await getWeatherInfo('Dhaka');
-  const miyazakiRes = await getWeatherInfo('Miyazaki');
+  const dhakaDataObj = getCacheValueDhaka();
+  const miyazakiDataObj = getCacheValueMiyazaki();
 
-  dhakaWeather.value = dhakaRes;
-  miyazakiWeather.value = miyazakiRes;
+  if (dhakaDataObj.isFetchRequired) {
+    try {
+      dhakaWeather.value = await getWeatherInfo('Dhaka');
+      cacheDhaka(dhakaWeather.value);
+    } catch (e) {
+      console.log(e.message);
+    }
+  } else {
+    dhakaWeather.value = dhakaDataObj.data;
+  }
+
+  if (miyazakiDataObj.isFetchRequired) {
+    try {
+      miyazakiWeather.value = await getWeatherInfo('Miyazaki');
+      cacheMiyazaki(miyazakiWeather.value);
+    } catch (e) {
+      console.log(e.message);
+    }
+  } else {
+    miyazakiWeather.value = miyazakiDataObj.data;
+  }
+
   isLoading.value = false;
 });
 </script>
