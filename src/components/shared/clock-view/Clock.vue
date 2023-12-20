@@ -1,11 +1,13 @@
 <template>
   <div class="clock-container">
-    {{ time }}
+    <div class="loader" v-if="isLoading">Loading clock...</div>
+    <div class="clock" v-else>{{ time }}</div>
+    <div>{{ a }}</div>
   </div>
 </template>
 
 <script setup>
-import { addMinutes, format } from 'date-fns';
+import { format } from 'date-fns';
 import { bn, enUS, ja } from 'date-fns/locale';
 import { computed, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue';
 import { useStore } from 'vuex';
@@ -22,6 +24,8 @@ const currentLanguage = computed(() => store.getters.getCurrentLanguage);
 
 const interval = ref(null);
 const time = ref(null);
+const a = ref(null);
+const isLoading = ref(true);
 
 onBeforeUnmount(() => {
   clearInterval(interval.value);
@@ -34,6 +38,9 @@ onUpdated(() => {
 
 onMounted(() => {
   changeClock();
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 1000);
 });
 
 const changeClock = () => {
@@ -44,16 +51,13 @@ const changeClock = () => {
       ? bn
       : enUS;
   interval.value = setInterval(() => {
-    time.value = format(getCurrentDateTime(), 'h:mm:ss a', {
-      locale,
-    });
+    time.value = format(getCurrentDateTime(), 'h:mm:ss');
+    a.value = format(getCurrentDateTime(), 'a', { locale });
   }, 1000);
 };
 
 const getCurrentDateTime = () => {
   const date = new Date();
-  // const offset = props.region.toLowerCase() === 'japan' ? 540 : 360;
-  // return addMinutes(date, date.getTimezoneOffset() + offset);
   return utcToZonedTime(date, props.tzId);
 };
 </script>
@@ -61,10 +65,9 @@ const getCurrentDateTime = () => {
 <style scoped>
 .clock-container {
   display: flex;
-  gap: 0.5rem;
   align-items: center;
 }
-.clock-icon {
-  font-size: 1rem;
+.clock {
+  min-width: 60px;
 }
 </style>

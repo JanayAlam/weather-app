@@ -30,7 +30,11 @@
           <div>
             <div class="subtitle">Current Weather</div>
             <div class="title">
-              {{ `${weather.location.name}, ${weather.location.country}` }}
+              {{
+                `${weather.location.region || weather.location.name}, ${
+                  weather.location.country
+                }`
+              }}
             </div>
             <div class="subtitle">
               <clock
@@ -45,11 +49,13 @@
               :icon="'far fa-sun'"
               :content="weather.current.astro.sunrise"
               :title="`Sunrise at ${weather.current.astro.sunrise}`"
+              :location="'start'"
             />
             <icon-text
               :icon="'far fa-moon fa-rotate-270'"
               :content="weather.current.astro.sunset"
               :title="`Sunrise at ${weather.current.astro.sunset}`"
+              :location="'start'"
             />
           </div>
         </div>
