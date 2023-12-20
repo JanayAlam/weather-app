@@ -9,6 +9,7 @@ import { addMinutes, format } from 'date-fns';
 import { bn, enUS, ja } from 'date-fns/locale';
 import { computed, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue';
 import { useStore } from 'vuex';
+import { utcToZonedTime } from 'date-fns-tz';
 
 const props = defineProps({
   region: String,
@@ -51,8 +52,9 @@ const changeClock = () => {
 
 const getCurrentDateTime = () => {
   const date = new Date();
-  const offset = props.region.toLowerCase() === 'japan' ? 540 : 360;
-  return addMinutes(date, date.getTimezoneOffset() + offset);
+  // const offset = props.region.toLowerCase() === 'japan' ? 540 : 360;
+  // return addMinutes(date, date.getTimezoneOffset() + offset);
+  return utcToZonedTime(date, props.tzId);
 };
 </script>
 

@@ -8,6 +8,7 @@ const getWeatherInfo = (queriesObj, date = new Date()) => {
   return {
     location: {
       name: 'Dhaka',
+      region: '',
       country: 'Bangladesh',
       lat: 23.72,
       lon: 90.41,
