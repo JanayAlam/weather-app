@@ -3,9 +3,9 @@ import getAstroInfo from './fetch-astro';
 
 /**
  * Fetch astronomy information from the API.
- * @param {Object} queriesObj the query object that will be passed in the url
+ * @param {String} _location the query object that will be passed in the url
  */
-const getWeatherInfo = (queriesObj, date = new Date()) => {
+const getWeatherInfo = (_location, _date = new Date()) => {
   return {
     location: {
       name: 'Dhaka',

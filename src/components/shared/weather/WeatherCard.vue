@@ -155,6 +155,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
+  console.log(props.weather);
   chartDataset.value = generateChartDataset([...props.weather.forecasts]);
 });
 

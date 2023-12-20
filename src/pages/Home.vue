@@ -1,5 +1,13 @@
 <template>
-  <v-row>
+  <v-row v-if="isLoading">
+    <v-col :lg="6" :md="12" :sm="12">
+      <v-skeleton-loader :loading="isLoading" height="500"></v-skeleton-loader>
+    </v-col>
+    <v-col :lg="6" :md="12" :sm="12">
+      <v-skeleton-loader :loading="isLoading" height="500"></v-skeleton-loader>
+    </v-col>
+  </v-row>
+  <v-row v-if="!isLoading">
     <!-- DHAKA -->
     <v-col :lg="6" :md="12" :sm="12">
       <weather-card
@@ -21,16 +29,19 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import getWeatherInfo from '../api/dummy/fetch-weather';
+import getWeatherInfo from '../api/fetch-weather';
 import WeatherCard from '../components/shared/weather/WeatherCard.vue';
 
 const isLoading = ref(true);
 const dhakaWeather = ref(null);
 const miyazakiWeather = ref(null);
 
-onMounted(() => {
-  dhakaWeather.value = getWeatherInfo();
-  miyazakiWeather.value = getWeatherInfo();
-  isLoading.value = true;
+onMounted(async () => {
+  const dhakaRes = await getWeatherInfo('Dhaka');
+  const miyazakiRes = await getWeatherInfo('Miyazaki');
+
+  dhakaWeather.value = dhakaRes;
+  miyazakiWeather.value = miyazakiRes;
+  isLoading.value = false;
 });
 </script>

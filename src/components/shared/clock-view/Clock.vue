@@ -1,6 +1,14 @@
 <template>
   <div class="clock-container">
-    <div class="loader" v-if="isLoading">Loading clock...</div>
+    <div class="loader" v-if="isLoading">
+      {{
+        currentLanguage === 'en'
+          ? 'Loading clock...'
+          : currentLanguage === 'bd'
+          ? 'ঘড়ি লোড হচ্ছে...'
+          : '時計を読み込んでいます...'
+      }}
+    </div>
     <div class="clock" v-else>{{ time }}</div>
     <div>{{ a }}</div>
   </div>
