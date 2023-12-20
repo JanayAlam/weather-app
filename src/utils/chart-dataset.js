@@ -104,8 +104,8 @@ const generateChartDataset = (arr) => {
 
   arr.forEach(({ date, temp }) => {
     // label
-    const day = getDayForAllLanguage(format(new Date(date), 'EEEE'));
-    labels.push(day.en);
+    const newDate = format(new Date(date), 'EEEE yyyy-MM-dd').split(' ');
+    labels.push([getDayForAllLanguage(newDate[0]), newDate[1]]);
 
     // celsius
     c[0].data.push(temp.min.c); // min

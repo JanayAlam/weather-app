@@ -1,8 +1,8 @@
 <template>
   <v-btn>
-    <div v-if="currentLang" class="language-switcher-container">
-      <flag :iso="languages[currentLang].icon" :squared="true" />
-      <span class="ml-2">{{ languages[currentLang].short }}</span>
+    <div v-if="currentLanguage" class="language-switcher-container">
+      <flag :iso="languages[currentLanguage].icon" :squared="true" />
+      <span class="ml-2">{{ languages[currentLanguage].short }}</span>
     </div>
     <v-menu activator="parent">
       <v-list>
@@ -36,7 +36,7 @@ import { setLanguage } from '../../../utils/lang-local-storage';
 const store = useStore();
 
 const languages = computed(() => store.getters.getAllLanguages);
-const currentLang = computed(() => store.getters.getCurrentLanguage);
+const currentLanguage = computed(() => store.getters.getCurrentLanguage);
 
 /**
  * Save the object in the current language state and local storage.

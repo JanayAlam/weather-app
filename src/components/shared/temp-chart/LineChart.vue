@@ -3,8 +3,14 @@
     :options="options"
     :data="
       isCelsius
-        ? { labels: chartData.labels, datasets: chartData.c }
-        : { labels: chartData.labels, datasets: chartData.f }
+        ? {
+            labels: currentLanguageLabel,
+            datasets: chartData.c,
+          }
+        : {
+            labels: currentLanguageLabel,
+            datasets: chartData.f,
+          }
     "
   />
 </template>
@@ -21,7 +27,11 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
+import { computed } from 'vue';
 import { Line } from 'vue-chartjs';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 ChartJS.register(
   CategoryScale,
@@ -44,6 +54,10 @@ const props = defineProps({
     default: true,
   },
 });
+
+const currentLanguageLabel = computed(() =>
+  props.chartData.labels.map((e) => [e[0][currentLanguage.value], e[1]])
+);
 
 const options = {
   maintainAspectRatio: false,
@@ -81,4 +95,6 @@ const options = {
     },
   },
 };
+
+const currentLanguage = computed(() => store.getters.getCurrentLanguage);
 </script>
