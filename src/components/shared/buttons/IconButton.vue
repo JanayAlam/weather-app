@@ -20,7 +20,7 @@
 const props = defineProps({
   onClickHandler: {
     type: Function,
-    required: true,
+    required: false,
   },
   title: {
     type: String,

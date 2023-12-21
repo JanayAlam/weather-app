@@ -11,12 +11,14 @@
         variant="elevated"
         :on-click-handler="toggleTempUnit"
       />
-      <icon-button
-        icons="fas fa-up-right-and-down-left-from-center"
-        color="primary"
-        variant="elevated"
-        :on-click-handler="() => {}"
-      />
+      <weather-view-dialog :weather="weather">
+        <icon-button
+          icons="fas fa-up-right-and-down-left-from-center"
+          color="primary"
+          variant="elevated"
+          slot="activator"
+        />
+      </weather-view-dialog>
       <icon-button
         v-if="isDeleteAble"
         icons="fas fa-trash"
@@ -133,6 +135,7 @@ import IconText from '../icon-text/IconText.vue';
 import LineChart from '../temp-chart/LineChart.vue';
 import Temperature from './Temperature.vue';
 import WeatherCardHeaderInfo from './WeatherCardHeaderInfo.vue';
+import WeatherViewDialog from './WeatherViewDialog.vue';
 
 const theme = useTheme();
 
