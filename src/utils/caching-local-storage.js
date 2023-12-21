@@ -1,4 +1,5 @@
-import { format, parse } from 'date-fns';
+import { add, isBefore } from 'date-fns';
+import { zonedTimeToUtc } from 'date-fns-tz';
 
 const KEY_DHAKA = 'w_dhaka';
 const KEY_MIYAZAKI = 'w_miyazaki';
@@ -8,12 +9,9 @@ const cache = (key, data) => {
   localStorage.setItem(key, data);
 };
 
-const getIsFetchRequired = (prevDate) => {
-  //! FIX: THIS IS NOT WORKING FOR LOCAL TIMES (OTHER THAN DHAKA)
-  const parsedDate = parse(prevDate, 'yyyy-MM-dd HH:mm', new Date());
-  const prevHour = format(parsedDate, 'HH').toString();
-  const currentHour = format(new Date(), 'HH').toString();
-  return prevHour !== currentHour;
+const getIsFetchRequired = (prevDate, tzId = 'Asia/Dhaka') => {
+  const prevHour = add(zonedTimeToUtc(prevDate, tzId), { hours: 1 });
+  return isBefore(prevHour, new Date());
 };
 
 export const cacheDhaka = (data) => {
@@ -30,7 +28,10 @@ export const getCacheValueDhaka = () => {
   }
   data = JSON.parse(data);
   return {
-    isFetchRequired: getIsFetchRequired(data.current.lastUpdated),
+    isFetchRequired: getIsFetchRequired(
+      data.current.lastUpdated,
+      data.location.tzId
+    ),
     data,
   };
 };
@@ -49,7 +50,10 @@ export const getCacheValueMiyazaki = () => {
   }
   data = JSON.parse(data);
   return {
-    isFetchRequired: getIsFetchRequired(data.current.lastUpdated),
+    isFetchRequired: getIsFetchRequired(
+      data.current.lastUpdated,
+      data.location.tzId
+    ),
     data,
   };
 };

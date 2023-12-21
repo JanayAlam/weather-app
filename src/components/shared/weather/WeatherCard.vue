@@ -54,11 +54,7 @@
           :condition="weather.current.condition"
           :feels-like="weather.current.feelsLike"
         />
-        <v-sheet class="mt-2" color="transparent">
-          <p class="font-weight-bold" style="color: #e53935">
-            {{ weather.current.uv }} UV
-          </p>
-        </v-sheet>
+
         <hr class="mt-5" style="opacity: 0.2" />
 
         <v-row class="mt-5 align-items-center weather-tip-container">

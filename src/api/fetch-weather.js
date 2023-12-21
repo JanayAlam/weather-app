@@ -57,7 +57,7 @@ const getWeatherInfo = async (locationStr, date = new Date()) => {
       visibility: res.data.current.vis_km,
       uv: res.data.current.uv,
       windGust: res.data.current.gust_kph,
-      air_quality: {
+      airQuality: {
         co: res.data.current.air_quality.co,
         no2: res.data.current.air_quality.no2,
         o3: res.data.current.air_quality.o3,
@@ -125,7 +125,7 @@ const getWeatherInfo = async (locationStr, date = new Date()) => {
       forecasts,
     };
   } catch (e) {
-    console.log(e.message);
+    throw e.response;
   }
 };
 

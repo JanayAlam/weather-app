@@ -30,11 +30,4 @@ app.use(FlagIcon);
 app.use(vuetify);
 app.use(Toast);
 
-// import fetchAstro from './api/fetch-astro';
-// console.log(fetchAstro({ q: 'Dhaka' }));
-
-// import getWeatherInfo from './api/fetch-weather';
-
-// console.log(getWeatherInfo('Dhaka'));
-
 app.mount('#app');
