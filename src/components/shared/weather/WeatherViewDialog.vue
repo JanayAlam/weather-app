@@ -1,10 +1,11 @@
 <template>
   <div>
-    <slot />
+    <slot></slot>
     <v-dialog
       activator="parent"
       width="auto"
       v-model="dialog"
+      persistent
       transition="dialog-center-transition"
     >
       <v-card>

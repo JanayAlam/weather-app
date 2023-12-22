@@ -4,7 +4,7 @@
       :elevation="0"
       :class="!theme.global.current.value.dark && 'app-bar-light'"
     >
-      <v-container>
+      <v-container fluid>
         <v-row no-gutters align="center">
           <v-col cols="12" md="4" align="start"> Weather App </v-col>
           <v-col cols="12" md="8" align="end">
