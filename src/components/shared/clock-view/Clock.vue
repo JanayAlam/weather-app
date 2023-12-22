@@ -9,8 +9,10 @@
           : '時計を読み込んでいます...'
       }}
     </div>
-    <div class="clock" v-else>{{ time }}</div>
-    <div>{{ a }}</div>
+    <template v-else>
+      <div class="clock">{{ time }}</div>
+      <div>{{ a }}</div>
+    </template>
   </div>
 </template>
 
@@ -71,6 +73,6 @@ const changeClock = () => {
   align-items: center;
 }
 .clock {
-  min-width: 65px;
+  min-width: 60px;
 }
 </style>

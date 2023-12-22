@@ -1,0 +1,274 @@
+<template>
+  <v-card min-width="800px">
+    <v-card-actions class="px-5 pt-5 buttons-groups">
+      <v-sheet>
+        <v-btn
+          @click="closeDialog"
+          variant="flat"
+          size="small"
+          color="blue-darken-3"
+        >
+          <v-icon icon="fas fa-angle-left" />
+        </v-btn>
+        <v-btn
+          @click="toggleScale"
+          variant="flat"
+          size="small"
+          color="orange-darken-4"
+        >
+          <v-icon :icon="`fas fa-${tempUnit === 'c' ? 'f' : 'c'}`" />
+          <v-tooltip
+            activator="parent"
+            :text="
+              currentLanguage === 'en'
+                ? `Change to ${tempUnit === 'c' ? 'fahrenheit' : 'celsius'}`
+                : currentLanguage === 'bd'
+                ? `${
+                    tempUnit === 'c' ? 'ফারেনহাইট' : 'সেলসিয়াস'
+                  } স্কেলে পরিবর্তন করুন`
+                : `${tempUnit === 'c' ? '華氏' : '摂氏'}スケールに変更`
+            "
+          />
+        </v-btn>
+      </v-sheet>
+      <v-sheet>
+        <v-btn size="small" variant="flat" color="blue-darken-3">
+          <v-icon icon="fas fa-plus" /> <span class="ml-2">Add</span>
+        </v-btn>
+        <v-btn size="small" variant="flat" color="red-darken-3">
+          <v-icon icon="fas fa-trash" /> <span class="ml-2">Remove</span>
+        </v-btn>
+      </v-sheet>
+    </v-card-actions>
+    <v-card-text class="pb-5">
+      <template v-if="isLoading">
+        <v-skeleton-loader
+          :loading="isLoading"
+          height="150"
+        ></v-skeleton-loader>
+        <br />
+        <v-skeleton-loader
+          :loading="isLoading"
+          height="100"
+        ></v-skeleton-loader>
+        <br />
+        <v-skeleton-loader :loading="isLoading" height="50"></v-skeleton-loader>
+      </template>
+      <template v-else>
+        <v-sheet class="button-pills-group mb-10">
+          <weather-pill-button
+            v-for="item in weathers"
+            :key="item.current.date"
+            :item="item"
+            :active="active.current.date === item.current.date"
+            :on-click-handler="changeActiveState"
+          />
+        </v-sheet>
+        <div class="test">
+          <weather-card-header-info
+            :location="active.location"
+            :date="new Date(active.current.date)"
+          />
+          <div class="group-of-icon-pills">
+            <weather-icon-pill
+              icon="fas fa-sun"
+              :title="
+                currentLanguage === 'en'
+                  ? 'Sunrise'
+                  : currentLanguage === 'bd'
+                  ? 'সূর্যোদয়'
+                  : '日の出'
+              "
+              :value="
+                getConvertedTime(active.current.astro.sunrise, currentLanguage)
+              "
+            />
+            <weather-icon-pill
+              icon="far fa-sun"
+              :title="
+                currentLanguage === 'en'
+                  ? 'Sunset'
+                  : currentLanguage === 'bd'
+                  ? 'সূর্যাস্ত'
+                  : '日没'
+              "
+              :value="
+                getConvertedTime(active.current.astro.sunset, currentLanguage)
+              "
+            />
+            <weather-icon-pill
+              icon="fas fa-moon fa-rotate-270"
+              :title="
+                currentLanguage === 'en'
+                  ? 'Moonrise'
+                  : currentLanguage === 'bd'
+                  ? 'চন্দ্রোদয়'
+                  : '月の出'
+              "
+              :value="
+                getConvertedTime(active.current.astro.moonrise, currentLanguage)
+              "
+            />
+            <weather-icon-pill
+              icon="far fa-moon fa-rotate-270"
+              :title="
+                currentLanguage === 'en'
+                  ? 'Moonset'
+                  : currentLanguage === 'bd'
+                  ? 'চন্দ্রাস্ত'
+                  : '月の入り'
+              "
+              :value="
+                getConvertedTime(active.current.astro.moonset, currentLanguage)
+              "
+            />
+          </div>
+        </div>
+        <temperature
+          :condition="active.current.condition"
+          :is-celsius="tempUnit === 'c'"
+          :temp="active.current.temp"
+          :feels-like="active.current.feelsLike"
+        />
+        <v-row class="my-10 p-all-1rem">
+          <line-chart
+            v-if="chartDataset !== null"
+            :chart-id="
+              weather.location.name + new Date() + Math.random() + Math.random()
+            "
+            :chartData="chartDataset"
+            :is-celsius="tempUnit === 'c'"
+          ></line-chart>
+        </v-row>
+      </template>
+    </v-card-text>
+  </v-card>
+</template>
+
+<script setup>
+import { format } from 'date-fns';
+import { computed, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+import generateChartDataset from '../../../utils/chart-dataset';
+import LineChart from '../temp-chart/LineChart.vue';
+import Temperature from './Temperature.vue';
+import WeatherCardHeaderInfo from './WeatherCardHeaderInfo.vue';
+import WeatherIconPill from './WeatherIconPill.vue';
+import WeatherPillButton from './WeatherPillButton.vue';
+
+const store = useStore();
+
+const props = defineProps({
+  closeDialog: {
+    type: Function,
+    required: true,
+  },
+  weather: {
+    type: Object,
+    required: true,
+  },
+});
+
+const weathers = ref({});
+const active = ref({});
+const tempUnit = ref('c');
+const isLoading = ref(true);
+const chartDataset = ref(null);
+
+const pushToWethersObj = (date, obj) => {
+  weathers.value[date] = obj;
+};
+
+onMounted(() => {
+  const today = format(new Date(), 'yyyy-MM-dd');
+  const currentObj = {
+    current: {
+      ...props.weather.current,
+      date: today,
+    },
+    location: props.weather.location,
+  };
+  pushToWethersObj(today, currentObj);
+  active.value = currentObj;
+  for (let i = 1; i < props.weather.forecasts.length; i++) {
+    const obj = {
+      current: {
+        ...props.weather.forecasts[i],
+        temp: props.weather.forecasts[i].temp.avg,
+      },
+      location: props.weather.location,
+    };
+    pushToWethersObj(obj.current.date, obj);
+  }
+  chartDataset.value = generateChartDataset([...props.weather.forecasts]);
+  isLoading.value = false;
+});
+
+const chartData = computed(() => {
+  const data = {
+    labels: chartData.value.labels,
+  };
+  if (tempUnit === 'c') {
+    data.datasets = chartData.value.c;
+  } else {
+    data.datasets = chartData.value.f;
+  }
+  return data;
+});
+
+const toggleScale = () => {
+  tempUnit.value = tempUnit.value === 'c' ? 'f' : 'c';
+};
+
+const changeActiveState = (date) => {
+  active.value = weathers.value[date];
+};
+
+const currentLanguage = computed(() => store.getters.getCurrentLanguage);
+
+const getConvertedTime = (time, lang) => {
+  const timeArr = time.split(' ');
+  const map = {
+    am: {
+      bd: 'পূর্বাহ্ন',
+      ja: '午前',
+    },
+    pm: {
+      bd: 'অপরাহ্ন',
+      ja: '午後',
+    },
+  };
+  if (lang === 'en') {
+    return time;
+  } else if (lang === 'bd') {
+    return `${timeArr[0]} ${map[timeArr[1].toLowerCase()].bd}`;
+  } else {
+    return `${timeArr[0]} ${map[timeArr[1].toLowerCase()].ja}`;
+  }
+};
+</script>
+
+<style scoped>
+.test {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttons-groups {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button-pills-group {
+  display: flex;
+  gap: 1rem !important;
+}
+
+.group-of-icon-pills {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+</style>

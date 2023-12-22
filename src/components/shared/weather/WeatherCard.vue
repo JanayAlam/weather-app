@@ -3,9 +3,15 @@
     <div class="card-controls">
       <icon-button
         :icons="`fas fa-${tempUnit === 'c' ? 'f' : 'c'}`"
-        :title="`Change to ${
-          tempUnit === 'c' ? 'fahrenheit' : 'celsius'
-        } scale`"
+        :title="
+          currentLanguage === 'en'
+            ? `Change to ${tempUnit === 'c' ? 'fahrenheit' : 'celsius'}`
+            : currentLanguage === 'bd'
+            ? `${
+                tempUnit === 'c' ? 'ফারেনহাইট' : 'সেলসিয়াস'
+              } স্কেলে পরিবর্তন করুন`
+            : `${tempUnit === 'c' ? '華氏' : '摂氏'}スケールに変更`
+        "
         tooltipLocation="start"
         color="orange-darken-4"
         variant="elevated"
@@ -37,13 +43,13 @@
           <weather-card-header-info :location="weather.location" />
           <div class="sunrise-sunset-container">
             <icon-text
-              :icon="'far fa-sun'"
+              :icon="'fas fa-sun'"
               :content="weather.current.astro.sunrise"
               :title="`Sunrise at ${weather.current.astro.sunrise}`"
               :location="'start'"
             />
             <icon-text
-              :icon="'far fa-moon fa-rotate-270'"
+              :icon="'far fa-sun'"
               :content="weather.current.astro.sunset"
               :title="`Sunrise at ${weather.current.astro.sunset}`"
               :location="'start'"
@@ -129,6 +135,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useTheme } from 'vuetify';
+import { useStore } from 'vuex';
 import generateChartDataset from '../../../utils/chart-dataset';
 import IconButton from '../buttons/IconButton.vue';
 import IconText from '../icon-text/IconText.vue';
@@ -138,6 +145,7 @@ import WeatherCardHeaderInfo from './WeatherCardHeaderInfo.vue';
 import WeatherViewDialog from './WeatherViewDialog.vue';
 
 const theme = useTheme();
+const store = useStore();
 
 const tempUnit = ref('c');
 const chartDataset = ref(null);
@@ -152,6 +160,8 @@ const props = defineProps({
     default: true,
   },
 });
+
+const currentLanguage = computed(() => store.getters.getCurrentLanguage);
 
 onMounted(() => {
   chartDataset.value = generateChartDataset([...props.weather.forecasts]);

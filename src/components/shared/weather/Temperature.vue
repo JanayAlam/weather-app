@@ -8,7 +8,7 @@
       <div>
         {{ condition.text[currentLanguage] }}
       </div>
-      <div>{{ getFeelsLikeText }}</div>
+      <div v-if="feelsLike">{{ getFeelsLikeText }}</div>
     </div>
   </div>
 </template>
@@ -35,7 +35,7 @@ const props = defineProps({
   },
   feelsLike: {
     type: Object,
-    required: true,
+    required: false,
   },
 });
 
@@ -77,5 +77,11 @@ const getFeelsLikeText = computed(() => {
 .temp-text {
   font-size: 4rem;
   font-family: 'Big Shoulders Display', 'Roboto', sans-serif;
+}
+
+.text-subtitle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 </style>

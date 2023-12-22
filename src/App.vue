@@ -2,7 +2,7 @@
   <v-app>
     <navbar />
     <v-main>
-      <v-container fluid>
+      <v-container fluid class="px-10">
         <router-view />
       </v-container>
     </v-main>
