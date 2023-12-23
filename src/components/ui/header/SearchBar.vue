@@ -85,6 +85,7 @@
         v-if="detailWeather"
         width="auto"
         persistent
+        @keydown.prevent.esc="detailDialog = false"
       >
         <weather-details
           :is-delete-able="true"
@@ -101,6 +102,7 @@ import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useStore } from 'vuex';
 import getWeatherInfo from '../../../api/fetch-weather';
+import useGlobalKeyboardEvent from '../../../hooks/useGlobalKeyboardEvent';
 import WeatherDetails from '../../shared/weather/WeatherDetails.vue';
 
 const searchDialog = ref(false);
@@ -143,6 +145,10 @@ watchEffect(() => {
   if (location.value) {
     location.value.focus();
   }
+});
+
+useGlobalKeyboardEvent('k', () => {
+  searchDialog.value = true;
 });
 
 const closeDetailsDialog = () => {
