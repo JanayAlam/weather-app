@@ -21,14 +21,12 @@ const store = useStore();
 
 store.dispatch('fetchLanguage');
 
-onMounted(async () => {
+onMounted(() => {
   // setting theme from local storage
   const localTheme = getTheme();
   localTheme == 'dark'
     ? (theme.global.name.value = 'dark')
     : (theme.global.name.value = 'light');
-
-  await store.dispatch('fetchCities');
 });
 </script>
 

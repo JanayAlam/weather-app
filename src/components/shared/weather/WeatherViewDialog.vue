@@ -8,7 +8,11 @@
       persistent
       transition="dialog-center-transition"
     >
-      <weather-details :close-dialog="closeDialog" :weather="weather" />
+      <weather-details
+        :close-dialog="closeDialog"
+        :weather="weather"
+        :is-delete-able="isDeleteAble"
+      />
     </v-dialog>
   </div>
 </template>
@@ -23,6 +27,10 @@ const props = defineProps({
   weather: {
     type: Object,
     required: true,
+  },
+  isDeleteAble: {
+    type: Boolean,
+    default: true,
   },
 });
 

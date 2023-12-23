@@ -32,12 +32,53 @@
         </v-btn>
       </v-sheet>
       <v-sheet>
-        <v-btn size="small" variant="flat" color="blue-darken-3">
-          <v-icon icon="fas fa-plus" /> <span class="ml-2">Add</span>
+        <v-btn
+          size="small"
+          variant="flat"
+          color="blue-darken-3"
+          v-if="!allCitiesName.includes(weather.location.name)"
+          @click="addCity"
+        >
+          <v-icon icon="fas fa-plus" />
+          <span class="ml-2">{{
+            currentLanguage === 'jp'
+              ? '追加'
+              : currentLanguage === 'bd'
+              ? 'সংযুক্ত করুন'
+              : 'Add'
+          }}</span>
         </v-btn>
-        <v-btn size="small" variant="flat" color="red-darken-3">
-          <v-icon icon="fas fa-trash" /> <span class="ml-2">Remove</span>
-        </v-btn>
+        <remove-button-dialog
+          :text="
+            currentLanguage === 'jp'
+              ? `本当にホームページから${weather.location.name}を削除しますか？`
+              : currentLanguage === 'bd'
+              ? `আপনি কি নিশ্চিত যে আপনি আপনার হোমপেজ থেকে ${weather.location.name} আপসারন করতে চাচ্ছেন?`
+              : `Do you really want to remove ${weather.location.name} from your homepage?`
+          "
+          :on-remove-handler="removeCity"
+        >
+          <v-btn
+            size="small"
+            variant="flat"
+            color="red-darken-3"
+            v-if="
+              isDeleteAble &&
+              allCitiesName
+                .filter((c) => c !== 'Dhaka' && c !== 'Miyazaki')
+                .includes(weather.location.name)
+            "
+          >
+            <v-icon icon="fas fa-trash" />
+            <span class="ml-2">{{
+              currentLanguage === 'jp'
+                ? '取り除く'
+                : currentLanguage === 'bd'
+                ? 'অপসারণ করুন'
+                : 'Remove'
+            }}</span>
+          </v-btn>
+        </remove-button-dialog>
       </v-sheet>
     </v-card-actions>
     <v-card-text class="pb-5">
@@ -132,6 +173,7 @@
         />
         <v-row class="my-10 p-all-1rem">
           <line-chart
+            :height="200"
             v-if="chartDataset !== null"
             :chart-id="
               weather.location.name + new Date() + Math.random() + Math.random()
@@ -148,8 +190,10 @@
 <script setup>
 import { format } from 'date-fns';
 import { computed, onMounted, ref } from 'vue';
+import { useToast } from 'vue-toastification';
 import { useStore } from 'vuex';
 import generateChartDataset from '../../../utils/chart-dataset';
+import RemoveButtonDialog from '../buttons/RemoveButtonDialog.vue';
 import LineChart from '../temp-chart/LineChart.vue';
 import Temperature from './Temperature.vue';
 import WeatherCardHeaderInfo from './WeatherCardHeaderInfo.vue';
@@ -157,6 +201,7 @@ import WeatherIconPill from './WeatherIconPill.vue';
 import WeatherPillButton from './WeatherPillButton.vue';
 
 const store = useStore();
+const toast = useToast();
 
 const props = defineProps({
   closeDialog: {
@@ -166,6 +211,10 @@ const props = defineProps({
   weather: {
     type: Object,
     required: true,
+  },
+  isDeleteAble: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -204,6 +253,15 @@ onMounted(() => {
   isLoading.value = false;
 });
 
+const removeCity = () => {
+  store.dispatch('removeACity', props.weather.location.name);
+};
+
+const addCity = async () => {
+  await store.dispatch('addNewCity', props.weather.location.name);
+  toast.success('City added to the application');
+};
+
 const chartData = computed(() => {
   const data = {
     labels: chartData.value.labels,
@@ -215,6 +273,8 @@ const chartData = computed(() => {
   }
   return data;
 });
+
+const allCitiesName = computed(() => store.getters.getAllCitiesName);
 
 const toggleScale = () => {
   tempUnit.value = tempUnit.value === 'c' ? 'f' : 'c';

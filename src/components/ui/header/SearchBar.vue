@@ -8,14 +8,17 @@
       activator="parent"
       location="start"
     />
-
-    <v-dialog v-model="searchDialog" activator="parent" width="auto">
+    <v-dialog
+      v-model="searchDialog"
+      activator="parent"
+      width="auto"
+      :transition="false"
+    >
       <v-card min-width="500px" min-height="150px">
         <v-form @submit.prevent="searchHandler">
           <v-text-field
             v-model="location"
             color="primary"
-            focused
             :disabled="isFetching"
             :placeholder="contents[currentLanguage].placeholder"
           />
@@ -26,17 +29,43 @@
             ></v-progress-linear>
             <p class="mt-2 text-center">Fetching weather...</p>
           </div>
+          <template v-else>
+            <v-list :items="histories"></v-list>
+          </template>
         </v-form>
       </v-card>
     </v-dialog>
+    <div>
+      <v-dialog
+        v-model="detailDialog"
+        v-if="detailWeather"
+        width="auto"
+        persistent
+      >
+        <weather-details
+          :is-delete-able="true"
+          :close-dialog="closeDetailsDialog"
+          :weather="detailWeather"
+        />
+      </v-dialog>
+    </div>
   </v-btn>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { useToast } from 'vue-toastification';
 import { useStore } from 'vuex';
+import getWeatherInfo from '../../../api/fetch-weather';
+import {
+cacheHistory,
+getCacheHistories,
+} from '../../../utils/search-history-local-storage';
+import WeatherDetails from '../../shared/weather/WeatherDetails.vue';
 
 const searchDialog = ref(false);
+const detailDialog = ref(false);
+const detailWeather = ref(null);
 const location = ref('');
 const isFetching = ref(false);
 
@@ -59,12 +88,41 @@ const contents = {
 };
 
 const store = useStore();
+const toast = useToast();
+const histories = ref([]);
+
 const currentLanguage = computed(() => store.getters.getCurrentLanguage);
 
-const searchHandler = () => {
-  isFetching.value = true;
+onMounted(() => {
+  histories.value = getCacheHistories();
+});
 
-  location.value = '';
+const closeDetailsDialog = () => {
+  detailDialog.value = false;
+};
+
+const searchHandler = async () => {
+  if (location.value === '') {
+    toast.error('City name required');
+    return;
+  }
+  try {
+    isFetching.value = true;
+    detailWeather.value = await getWeatherInfo(location.value);
+    cacheHistory(location.value);
+    searchDialog.value = false;
+    detailDialog.value = true;
+  } catch (e) {
+    console.log(e);
+    if (e.data) {
+      toast.error(e.data.error.message);
+    } else {
+      toast.error(e.message);
+    }
+  } finally {
+    location.value = '';
+    isFetching.value = false;
+  }
 };
 </script>
 

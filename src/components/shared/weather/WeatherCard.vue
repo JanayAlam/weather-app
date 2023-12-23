@@ -17,7 +17,7 @@
         variant="elevated"
         :on-click-handler="toggleTempUnit"
       />
-      <weather-view-dialog :weather="weather">
+      <weather-view-dialog :weather="weather" :is-delete-able="isDeleteAble">
         <icon-button
           icons="fas fa-up-right-and-down-left-from-center"
           color="primary"
@@ -25,13 +25,23 @@
           slot="activator"
         />
       </weather-view-dialog>
-      <icon-button
-        v-if="isDeleteAble"
-        icons="fas fa-trash"
-        color="error"
-        variant="elevated"
-        :on-click-handler="() => {}"
-      />
+      <remove-button-dialog
+        :text="
+          currentLanguage === 'jp'
+            ? `本当にホームページから${weather.location.name}を削除しますか？`
+            : currentLanguage === 'bd'
+            ? `আপনি কি নিশ্চিত যে আপনি আপনার হোমপেজ থেকে ${weather.location.name} আপসারন করতে চাচ্ছেন?`
+            : `Do you really want to remove ${weather.location.name} from your homepage?`
+        "
+        :on-remove-handler="removeCity"
+      >
+        <icon-button
+          v-if="isDeleteAble"
+          icons="fas fa-trash"
+          color="error"
+          variant="elevated"
+        />
+      </remove-button-dialog>
     </div>
     <v-card
       :class="`py-3 px-3 weather-card weather-card-${
@@ -138,6 +148,7 @@ import { useTheme } from 'vuetify';
 import { useStore } from 'vuex';
 import generateChartDataset from '../../../utils/chart-dataset';
 import IconButton from '../buttons/IconButton.vue';
+import RemoveButtonDialog from '../buttons/RemoveButtonDialog.vue';
 import IconText from '../icon-text/IconText.vue';
 import LineChart from '../temp-chart/LineChart.vue';
 import Temperature from './Temperature.vue';
@@ -169,6 +180,10 @@ onMounted(() => {
 
 const toggleTempUnit = () => {
   tempUnit.value = tempUnit.value === 'c' ? 'f' : 'c';
+};
+
+const removeCity = () => {
+  store.dispatch('removeACity', props.weather.location.name);
 };
 
 const chartData = computed(() => {
