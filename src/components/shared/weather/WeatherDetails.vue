@@ -254,12 +254,33 @@ onMounted(() => {
 });
 
 const removeCity = () => {
-  store.dispatch('removeACity', props.weather.location.name);
+  try {
+    store.dispatch('removeACity', props.weather.location.name);
+    toast.success(
+      currentLanguage.value === 'jp'
+        ? '市の撤去に成功'
+        : currentLanguage.value === 'bd'
+        ? 'শহর সফলভাবে অপসারণ করা হয়েছে'
+        : 'City removed successfully'
+    );
+  } catch (e) {
+    toast.error(e.message);
+  }
 };
 
 const addCity = async () => {
-  await store.dispatch('addNewCity', props.weather.location.name);
-  toast.success('City added to the application');
+  try {
+    await store.dispatch('addNewCity', props.weather.location.name);
+    toast.success(
+      currentLanguage.value === 'jp'
+        ? '都市の追加に成功'
+        : currentLanguage.value === 'bd'
+        ? 'শহরটি সফলভাবে ঘুক্ত করা হয়েছে'
+        : 'Successfully added the city'
+    );
+  } catch (e) {
+    toast.error(e.message);
+  }
 };
 
 const chartData = computed(() => {

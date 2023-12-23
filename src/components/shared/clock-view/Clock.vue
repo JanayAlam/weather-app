@@ -73,6 +73,6 @@ const changeClock = () => {
   align-items: center;
 }
 .clock {
-  min-width: 60px;
+  min-width: 65px;
 }
 </style>

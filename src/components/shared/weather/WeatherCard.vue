@@ -49,23 +49,7 @@
       }`"
     >
       <v-card-text>
-        <div class="weather-card-header">
-          <weather-card-header-info :location="weather.location" />
-          <div class="sunrise-sunset-container">
-            <icon-text
-              :icon="'fas fa-sun'"
-              :content="weather.current.astro.sunrise"
-              :title="`Sunrise at ${weather.current.astro.sunrise}`"
-              :location="'start'"
-            />
-            <icon-text
-              :icon="'far fa-sun'"
-              :content="weather.current.astro.sunset"
-              :title="`Sunrise at ${weather.current.astro.sunset}`"
-              :location="'start'"
-            />
-          </div>
-        </div>
+        <weather-card-header-info :location="weather.location" />
         <temperature
           :is-celsius="tempUnit === 'c'"
           :temp="weather.current.temp"
@@ -144,6 +128,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import { useToast } from 'vue-toastification';
 import { useTheme } from 'vuetify';
 import { useStore } from 'vuex';
 import generateChartDataset from '../../../utils/chart-dataset';
@@ -157,6 +142,7 @@ import WeatherViewDialog from './WeatherViewDialog.vue';
 
 const theme = useTheme();
 const store = useStore();
+const toast = useToast();
 
 const tempUnit = ref('c');
 const chartDataset = ref(null);
@@ -183,7 +169,18 @@ const toggleTempUnit = () => {
 };
 
 const removeCity = () => {
-  store.dispatch('removeACity', props.weather.location.name);
+  try {
+    store.dispatch('removeACity', props.weather.location.name);
+    toast.success(
+      currentLanguage.value === 'jp'
+        ? '市の撤去に成功'
+        : currentLanguage.value === 'bd'
+        ? 'শহর সফলভাবে অপসারণ করা হয়েছে'
+        : 'City removed successfully'
+    );
+  } catch (e) {
+    toast.error(e.message);
+  }
 };
 
 const chartData = computed(() => {
@@ -241,18 +238,6 @@ const chartData = computed(() => {
 
 .weather-card-dark {
   border: 1px solid #242424;
-}
-
-.weather-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.sunrise-sunset-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 
 .p-all-1rem {

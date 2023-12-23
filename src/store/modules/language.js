@@ -24,7 +24,7 @@ const LANGUAGES = {
   },
 };
 
-const language = {
+const languageModule = {
   state: () => ({
     lang: LANGUAGES.en.value,
     languages: { ...LANGUAGES },
@@ -57,4 +57,4 @@ const language = {
   },
 };
 
-export default language;
+export default languageModule;

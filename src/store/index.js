@@ -1,11 +1,13 @@
 import { createStore } from 'vuex';
 import cityModule from './modules/cities';
-import language from './modules/language';
+import languageModule from './modules/language';
+import searchHistoriesModule from './modules/search-histories';
 
 const store = createStore({
   modules: {
-    language,
+    language: languageModule,
     city: cityModule,
+    searchHistories: searchHistoriesModule,
   },
 });
 

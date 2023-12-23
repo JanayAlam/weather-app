@@ -19,18 +19,58 @@
           <v-text-field
             v-model="location"
             color="primary"
-            :disabled="isFetching"
+            :disabled="isFetching || isLoading"
             :placeholder="contents[currentLanguage].placeholder"
           />
+          <div
+            class="px-2 mb-1 text-center text-weight-bold text-primary"
+            v-if="isLoading"
+          >
+            <v-progress-linear
+              indeterminate
+              color="primary"
+              class="mb-2"
+            ></v-progress-linear>
+            <p class="mt-2">
+              {{
+                currentLanguage === 'jp'
+                  ? '履歴の読み込み中...'
+                  : currentLanguage === 'bd'
+                  ? 'ইতিহাস লোড হচ্ছে...'
+                  : 'Loading histories...'
+              }}
+            </p>
+          </div>
           <div class="px-2" v-if="isFetching">
             <v-progress-linear
               indeterminate
               color="primary"
+              class="mb-2"
             ></v-progress-linear>
-            <p class="mt-2 text-center">Fetching weather...</p>
+            <p class="mt-2 text-center">
+              {{
+                currentLanguage === 'jp'
+                  ? '天気の詳細を検索しています...'
+                  : currentLanguage === 'bd'
+                  ? 'আবহাওয়ার বিবরণ খোঁজা হচ্ছে...'
+                  : 'Searching weather details...'
+              }}
+            </p>
           </div>
           <template v-else>
-            <v-list :items="histories"></v-list>
+            <p
+              class="mb-2 text-center text-weight-bold text-primary"
+              v-if="histories.length === 0"
+            >
+              {{
+                currentLanguage === 'jp'
+                  ? '空の'
+                  : currentLanguage === 'bd'
+                  ? 'খালি'
+                  : 'Empty'
+              }}
+            </p>
+            <v-list :items="histories"> </v-list>
           </template>
         </v-form>
       </v-card>
@@ -57,10 +97,6 @@ import { computed, onMounted, ref } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useStore } from 'vuex';
 import getWeatherInfo from '../../../api/fetch-weather';
-import {
-cacheHistory,
-getCacheHistories,
-} from '../../../utils/search-history-local-storage';
 import WeatherDetails from '../../shared/weather/WeatherDetails.vue';
 
 const searchDialog = ref(false);
@@ -68,6 +104,7 @@ const detailDialog = ref(false);
 const detailWeather = ref(null);
 const location = ref('');
 const isFetching = ref(false);
+const isLoading = ref(true);
 
 const contents = {
   en: {
@@ -89,12 +126,13 @@ const contents = {
 
 const store = useStore();
 const toast = useToast();
-const histories = ref([]);
 
 const currentLanguage = computed(() => store.getters.getCurrentLanguage);
+const histories = computed(() => store.getters.getSearchHistories);
 
 onMounted(() => {
-  histories.value = getCacheHistories();
+  store.dispatch('fetchHistories');
+  isLoading.value = false;
 });
 
 const closeDetailsDialog = () => {
@@ -109,11 +147,10 @@ const searchHandler = async () => {
   try {
     isFetching.value = true;
     detailWeather.value = await getWeatherInfo(location.value);
-    cacheHistory(location.value);
+    store.dispatch('addNewHistory', location.value);
     searchDialog.value = false;
     detailDialog.value = true;
   } catch (e) {
-    console.log(e);
     if (e.data) {
       toast.error(e.data.error.message);
     } else {
