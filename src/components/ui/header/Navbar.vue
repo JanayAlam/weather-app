@@ -6,7 +6,9 @@
     >
       <v-container fluid class="px-10">
         <v-row no-gutters align="center">
-          <v-col cols="12" md="4" align="start"> Weather App </v-col>
+          <v-col cols="12" md="4" align="start">
+            <img :src="logo" alt="Logo" width="150px" style="opacity: 1" />
+          </v-col>
           <v-col cols="12" md="8" align="end">
             <div class="icon-buttons">
               <search-bar />
@@ -35,6 +37,7 @@
 
 <script setup>
 import { useTheme } from 'vuetify';
+import logo from '../../../assets/logo.png';
 import { setTheme } from '../../../utils/theme-local-storage';
 import IconButton from '../../shared/buttons/IconButton.vue';
 import LanguageSwitcher from './LanguageSwitcher.vue';
@@ -50,6 +53,19 @@ const toggleTheme = () => {
 </script>
 
 <style scoped>
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-container-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+
+  /* margin-left: -100px; */
+}
+
 .app-bar-light {
   background-color: #f8f8f8;
   border-bottom: 1px solid #f0f0f0;

@@ -1,8 +1,12 @@
 <template>
-  <v-btn variant="flat" style="text-transform: capitalize; opacity: 0.7">
+  <v-btn
+    variant="flat"
+    style="text-transform: capitalize; opacity: 0.7"
+    @keyup.ctrl.q="searchDialog = true"
+  >
     <v-icon icon="fas fa-magnifying-glass" />
     <span class="ml-3">{{ contents[currentLanguage].body }}</span>
-    <span class="ml-3 tip">Ctrl+K</span>
+    <span class="ml-3 tip">Ctrl+q</span>
     <v-tooltip
       :text="contents[currentLanguage].title"
       activator="parent"
@@ -21,6 +25,7 @@
             color="primary"
             :disabled="isFetching || isLoading"
             :placeholder="contents[currentLanguage].placeholder"
+            ref="searchBar"
           />
           <div
             class="px-2 mb-1 text-center text-weight-bold text-primary"
@@ -105,6 +110,7 @@ const detailWeather = ref(null);
 const location = ref('');
 const isFetching = ref(false);
 const isLoading = ref(true);
+// const searchBar = ref(null);
 
 const contents = {
   en: {
