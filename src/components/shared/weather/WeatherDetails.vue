@@ -33,21 +33,41 @@
       </v-sheet>
       <v-sheet>
         <v-btn
+          disabled
           size="small"
           variant="flat"
           color="blue-darken-3"
-          v-if="!allCitiesName.includes(weather.location.name)"
+          v-if="addCityLoading"
+        >
+          {{
+            currentLanguage === 'jp'
+              ? '読み込み中...'
+              : currentLanguage === 'bd'
+              ? 'লোড হচ্ছে...'
+              : 'Loading...'
+          }}
+        </v-btn>
+        <v-btn
+          size="small"
+          variant="flat"
+          color="blue-darken-3"
+          v-if="
+            !addCityLoading && !allCitiesName.includes(weather.location.name)
+          "
           @click="addCity"
         >
           <v-icon icon="fas fa-plus" />
-          <span class="ml-2">{{
-            currentLanguage === 'jp'
-              ? '追加'
-              : currentLanguage === 'bd'
-              ? 'সংযুক্ত করুন'
-              : 'Add'
-          }}</span>
+          <span class="ml-2">
+            {{
+              currentLanguage === 'jp'
+                ? '追加'
+                : currentLanguage === 'bd'
+                ? 'সংযুক্ত করুন'
+                : 'Add'
+            }}
+          </span>
         </v-btn>
+
         <remove-button-dialog
           :text="
             currentLanguage === 'jp'
@@ -223,6 +243,7 @@ const active = ref({});
 const tempUnit = ref('c');
 const isLoading = ref(true);
 const chartDataset = ref(null);
+const addCityLoading = ref(false);
 
 const pushToWethersObj = (date, obj) => {
   weathers.value[date] = obj;
@@ -270,6 +291,7 @@ const removeCity = () => {
 
 const addCity = async () => {
   try {
+    addCityLoading.value = true;
     await store.dispatch('addNewCity', props.weather.location.name);
     toast.success(
       currentLanguage.value === 'jp'
@@ -280,6 +302,8 @@ const addCity = async () => {
     );
   } catch (e) {
     toast.error(e.message);
+  } finally {
+    addCityLoading.value = false;
   }
 };
 

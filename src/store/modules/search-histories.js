@@ -28,8 +28,8 @@ const searchHistoriesModule = {
           if (state.histories.length < 3) {
             state.histories = [payload, ...state.histories];
           } else {
-            histories.pop();
-            state.histories = [item, ...state.histories];
+            state.histories.pop();
+            state.histories = [payload, ...state.histories];
           }
         }
       }
