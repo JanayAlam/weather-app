@@ -2,11 +2,11 @@
   <v-btn
     variant="flat"
     style="text-transform: capitalize; opacity: 0.7"
-    @keyup.ctrl.q="searchDialog = true"
+    @keydown.prevent.ctrl.k="searchDialog = true"
   >
     <v-icon icon="fas fa-magnifying-glass" />
     <span class="ml-3">{{ contents[currentLanguage].body }}</span>
-    <span class="ml-3 tip">Ctrl+q</span>
+    <span class="ml-3 tip">Ctrl+k</span>
     <v-tooltip
       :text="contents[currentLanguage].title"
       activator="parent"
@@ -21,11 +21,10 @@
       <v-card min-width="500px" min-height="150px">
         <v-form @submit.prevent="searchHandler">
           <v-text-field
-            v-model="location"
+            ref="location"
             color="primary"
             :disabled="isFetching || isLoading"
             :placeholder="contents[currentLanguage].placeholder"
-            ref="searchBar"
           />
           <div
             class="px-2 mb-1 text-center text-weight-bold text-primary"
@@ -98,7 +97,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useStore } from 'vuex';
 import getWeatherInfo from '../../../api/fetch-weather';
@@ -107,10 +106,9 @@ import WeatherDetails from '../../shared/weather/WeatherDetails.vue';
 const searchDialog = ref(false);
 const detailDialog = ref(false);
 const detailWeather = ref(null);
-const location = ref('');
+const location = ref(null);
 const isFetching = ref(false);
 const isLoading = ref(true);
-// const searchBar = ref(null);
 
 const contents = {
   en: {
@@ -141,19 +139,26 @@ onMounted(() => {
   isLoading.value = false;
 });
 
+watchEffect(() => {
+  if (location.value) {
+    location.value.focus();
+  }
+});
+
 const closeDetailsDialog = () => {
   detailDialog.value = false;
 };
 
 const searchHandler = async () => {
-  if (location.value === '') {
+  const value = location.value.value;
+  if (value === '') {
     toast.error('City name required');
     return;
   }
   try {
     isFetching.value = true;
-    detailWeather.value = await getWeatherInfo(location.value);
-    store.dispatch('addNewHistory', location.value);
+    detailWeather.value = await getWeatherInfo(value);
+    store.dispatch('addNewHistory', value);
     searchDialog.value = false;
     detailDialog.value = true;
   } catch (e) {
@@ -163,7 +168,7 @@ const searchHandler = async () => {
       toast.error(e.message);
     }
   } finally {
-    location.value = '';
+    location.value.value = '';
     isFetching.value = false;
   }
 };
