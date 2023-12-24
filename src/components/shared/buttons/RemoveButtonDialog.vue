@@ -39,7 +39,7 @@
             <v-btn
               color="error"
               variant="flat"
-              @click="onRemoveHandler"
+              @click="removeHandler"
               class="px-3"
             >
               {{
@@ -67,6 +67,11 @@ const store = useStore();
 
 const openDialog = () => {
   dialog.value = true;
+};
+
+const removeHandler = () => {
+  props.onRemoveHandler();
+  dialog.value = false;
 };
 
 const props = defineProps({
