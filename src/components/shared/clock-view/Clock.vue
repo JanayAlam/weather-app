@@ -10,8 +10,8 @@
       }}
     </div>
     <template v-else>
-      <div class="clock">{{ time }}</div>
-      <div>{{ a }}</div>
+      <div class="clock" id="clock-time">{{ time }}</div>
+      <div id="clock-am-pm">{{ a }}</div>
     </template>
   </div>
 </template>
@@ -24,7 +24,6 @@ import { useStore } from 'vuex';
 import { getCurrentDateTime } from '../../../utils/date-time';
 
 const props = defineProps({
-  region: String,
   tzId: String,
 });
 

@@ -1,14 +1,16 @@
 <template>
   <div class="temperature-section">
     <img :src="condition.icon" class="temp-icon" alt="Condition Icon" />
-    <div class="temp-text">
+    <div class="temp-text" id="temperature-text">
       {{ isCelsius ? temp.c : temp.f }}&deg;{{ isCelsius ? 'C' : 'F' }}
     </div>
     <div class="text-subtitle">
-      <div>
+      <div id="temperature-condition-text">
         {{ condition.text[currentLanguage] }}
       </div>
-      <div v-if="feelsLike">{{ getFeelsLikeText }}</div>
+      <div v-if="feelsLike" id="temperature-feels-like">
+        {{ getFeelsLikeText }}
+      </div>
     </div>
   </div>
 </template>

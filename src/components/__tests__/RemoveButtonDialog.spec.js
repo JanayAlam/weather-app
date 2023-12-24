@@ -4,7 +4,7 @@ import { createApp } from 'vue';
 import RemoveButtonDialog from '../shared/buttons/RemoveButtonDialog.vue';
 import store from './mocks/__store__.js';
 
-describe('icon button test suite', () => {
+describe('RemoveButtonDialog', () => {
   const app = createApp(RemoveButtonDialog);
   app.use(store);
   let wrapper;
@@ -24,7 +24,7 @@ describe('icon button test suite', () => {
     });
   });
 
-  it('should receive right props', async () => {
+  it('should receive right props', () => {
     expect(wrapper.props().text).toBe('This is the text');
     expect(wrapper.props().onRemoveHandler).toBeTruthy();
   });

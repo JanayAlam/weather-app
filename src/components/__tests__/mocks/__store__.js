@@ -29,6 +29,11 @@ const store = createStore({
       },
     };
   },
+  mutations: {
+    CHANGE_LANGUAGE(state, payload) {
+      state.lang = payload;
+    },
+  },
   getters: {
     getAllLanguages(state) {
       return state.languages;

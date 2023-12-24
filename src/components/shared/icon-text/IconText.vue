@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <v-icon :icon="icon" />
-    <div>
+    <div id="icon-text-content">
       {{
         typeof content === 'string' || typeof content === 'number'
           ? content
@@ -9,6 +9,7 @@
       }}
     </div>
     <v-tooltip
+      id="icon-text-tooltip"
       :text="
         typeof title === 'string' || typeof title === 'number'
           ? title
