@@ -3,19 +3,27 @@
     <v-app-bar
       :elevation="0"
       :class="!theme.global.current.value.dark && 'app-bar-light'"
+      aria-label="navigation bar"
     >
       <v-container fluid class="px-10">
         <v-row no-gutters align="center">
           <v-col cols="12" md="4" align="start">
-            <img :src="logo" alt="Logo" width="150px" style="opacity: 1" />
+            <img
+              :src="theme.global.current.value.dark ? darkLogo : lightLogo"
+              width="150px"
+              style="opacity: 1"
+              alt="kodensya weather logo"
+              aria-labelledby="application's logo"
+            />
           </v-col>
           <v-col cols="12" md="8" align="end">
             <div class="icon-buttons">
-              <search-bar />
+              <search-bar aria-labelledby="search bar" />
               <!-- DROPDOWN BUTTON FOR CHANGING THE LANGUAGE -->
               <language-switcher />
               <!-- ICON BUTTON FOR TOGGLE THE THEME -->
               <icon-button
+                aria-labelledby="theme toggler button"
                 :on-click-handler="toggleTheme"
                 :class="`icon-${
                   theme.global.current.value.dark ? 'sun' : 'moon'
@@ -37,7 +45,8 @@
 
 <script setup>
 import { useTheme } from 'vuetify';
-import logo from '../../../assets/logo.png';
+import darkLogo from '../../../assets/logo-dark.png';
+import lightLogo from '../../../assets/logo-light.png';
 import { setTheme } from '../../../utils/theme-local-storage';
 import IconButton from '../../shared/buttons/IconButton.vue';
 import LanguageSwitcher from './LanguageSwitcher.vue';
