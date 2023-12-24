@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`IconButton > should receive right props 1`] = `
+"<v-btn data-v-c0cfd068="" class="" density="comfortable" icon="" variant="tonal" id="icon-button-btn">
+  <v-icon data-v-c0cfd068="" icon="fas fa-trash" class="icon" id="icon-button-icon"></v-icon>
+  <v-tooltip data-v-c0cfd068="" id="icon-button-tooltip" text="This is title" activator="parent" location="bottom"></v-tooltip>
+</v-btn>"
+`;
+
+exports[`icon button test suite > should receive right props 1`] = `
+"<v-btn data-v-c0cfd068="" class="" density="comfortable" icon="" variant="tonal" id="icon-button-btn">
+  <v-icon data-v-c0cfd068="" icon="fas fa-trash" class="icon" id="icon-button-icon"></v-icon>
+  <v-tooltip data-v-c0cfd068="" id="icon-button-tooltip" text="This is title" activator="parent" location="bottom"></v-tooltip>
+</v-btn>"
+`;

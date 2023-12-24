@@ -1,16 +1,23 @@
 <template>
   <div>
-    <slot :on-click-handler="openDialog"></slot>
+    <slot
+      :on-click-handler="openDialog"
+      id="remove-button-dialog-trigger-btn"
+    ></slot>
     <v-dialog
       v-model="dialog"
       activator="parent"
       max-width="500px"
       :transition="false"
+      id="remove-button-dialog-container"
     >
       <v-card>
         <v-card-text>
-          <div class="text-weight-bold">
-            {{ text || 'Are you sure?' }}
+          <div
+            class="text-weight-bold"
+            id="remove-button-dialog-text-container"
+          >
+            {{ text }}
           </div>
         </v-card-text>
         <v-card-actions>
@@ -65,7 +72,7 @@ const openDialog = () => {
 const props = defineProps({
   text: {
     type: String,
-    required: true,
+    default: 'Are you sure?',
   },
   onRemoveHandler: {
     type: Function,

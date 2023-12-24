@@ -5,9 +5,15 @@
     density="comfortable"
     icon=""
     :variant="variant"
+    id="icon-button-btn"
   >
-    <v-icon :icon="icons || ''" :class="classes + ' icon'" />
+    <v-icon
+      :icon="icons || ''"
+      :class="classes + ' icon'"
+      id="icon-button-icon"
+    />
     <v-tooltip
+      id="icon-button-tooltip"
       v-if="title"
       :text="title || ''"
       activator="parent"
