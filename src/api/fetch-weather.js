@@ -106,7 +106,7 @@ const getWeatherInfo = async (locationStr, date = new Date()) => {
           moonPhase: ele.astro.moon_phase,
           moonIllumination: ele.astro.moon_illumination,
         },
-        air_quality: {
+        airQuality: {
           co: ele.day.air_quality.co,
           no2: ele.day.air_quality.no2,
           o3: ele.day.air_quality.o3,

@@ -42,7 +42,7 @@ const getWeatherInfo = (_location, _date = new Date()) => {
       visibility: 10,
       uv: 6.0,
       windGust: 12.4,
-      air_quality: {
+      airQuality: {
         co: 1468.7,
         no2: 16.3,
         o3: 127.3,
@@ -92,7 +92,7 @@ const getWeatherInfo = (_location, _date = new Date()) => {
           moonrise: '11:48 AM',
           moonset: '11:53 PM',
         },
-        air_quality: {
+        airQuality: {
           co: 1439.024,
           no2: 23.652,
           o3: 79.77600000000001,

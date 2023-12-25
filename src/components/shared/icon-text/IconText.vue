@@ -9,6 +9,7 @@
       }}
     </div>
     <v-tooltip
+      v-if="title"
       id="icon-text-tooltip"
       :text="
         typeof title === 'string' || typeof title === 'number'
@@ -38,7 +39,7 @@ const props = defineProps({
   },
   title: {
     type: [Object, String, Number],
-    required: true,
+    required: false,
   },
   location: {
     type: String,

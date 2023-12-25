@@ -191,6 +191,168 @@
           :temp="active.current.temp"
           :feels-like="active.current.feelsLike"
         />
+
+        <v-row class="pa-5 d-block">
+          <div class="my-2">
+            <icon-text
+              :content="{
+                en: `${active.current.humidity}&percnt; humidity in the air`,
+                bd: `আর্দ্রতা ${active.current.humidity}&percnt;`,
+                jp: `湿度${active.current.humidity}&percnt;`,
+              }"
+              icon="fas fa-water"
+            />
+          </div>
+          <div class="my-2">
+            <icon-text
+              :content="{
+                en: `Visibility ${active.current.visibility} km`,
+                bd: `দৃশ্যমানতা ${active.current.visibility} কিলোমিটার`,
+                jp: `可視性${active.current.visibility}キロメートル`,
+              }"
+              icon="fas fa-eye"
+            />
+          </div>
+        </v-row>
+
+        <v-row class="py-2 px-5">
+          <p class="mb-3 font-weight-bold text-primary">
+            {{
+              currentLanguage === 'jp'
+                ? '空気の質'
+                : currentLanguage === 'bd'
+                ? 'বায়ুর গুণমান'
+                : 'Air Quality'
+            }}
+          </p>
+          <v-card class="w-100">
+            <v-table density="compact">
+              <thead>
+                <tr>
+                  <th class="pt-2 text-center font-weight-bold">
+                    {{
+                      currentLanguage === 'jp'
+                        ? '一酸化炭素'
+                        : currentLanguage === 'bd'
+                        ? 'কার্বন মনোক্সাইড'
+                        : 'Carbon Monoxide'
+                    }}
+                    (CO)
+                  </th>
+                  <th class="pt-2 text-center font-weight-bold">
+                    {{
+                      currentLanguage === 'jp'
+                        ? '二酸化窒素'
+                        : currentLanguage === 'bd'
+                        ? 'নাইট্রোজেন ডাই অক্সাইড'
+                        : 'Nitrogen Dioxide'
+                    }}
+                    (NO<sub>2</sub>)
+                  </th>
+                  <th class="pt-2 text-center font-weight-bold">
+                    {{
+                      currentLanguage === 'jp'
+                        ? 'オゾン'
+                        : currentLanguage === 'bd'
+                        ? 'ওজোন'
+                        : 'Ozone'
+                    }}
+                    (O<sub>3</sub>)
+                  </th>
+                  <th class="pt-2 text-center font-weight-bold">
+                    {{
+                      currentLanguage === 'jp'
+                        ? '二酸化硫黄'
+                        : currentLanguage === 'bd'
+                        ? 'সালফার ডাই অক্সাইড'
+                        : 'Sulfur dioxide'
+                    }}
+                    (SO<sub>2</sub>)
+                  </th>
+                  <th class="pt-2 text-center font-weight-bold">
+                    PM<sub>2.5</sub>
+                  </th>
+                  <th class="pt-2 text-center font-weight-bold">
+                    PM<sub>10</sub>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="pt-2 text-center">
+                    {{ active.current.airQuality.co?.toFixed(2) || '-' }}
+                  </td>
+                  <td class="pt-2 text-center">
+                    {{ active.current.airQuality.no2?.toFixed(2) || '-' }}
+                  </td>
+                  <td class="pt-2 text-center">
+                    {{ active.current.airQuality.o3?.toFixed(2) || '-' }}
+                  </td>
+                  <td class="pt-2 text-center">
+                    {{ active.current.airQuality.so2?.toFixed(2) || '-' }}
+                  </td>
+                  <td class="pt-2 text-center">
+                    {{ active.current.airQuality.pm2_5?.toFixed(2) || '-' }}
+                  </td>
+                  <td class="pt-2 text-center">
+                    {{ active.current.airQuality.pm10?.toFixed(2) || '-' }}
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-card>
+        </v-row>
+
+        <hr class="w-100 my-5" style="opacity: 0.4" />
+
+        <v-row class="pa-5">
+          <p class="mb-3 font-weight-bold text-primary">
+            {{
+              currentLanguage === 'jp'
+                ? '現在のステータス'
+                : currentLanguage === 'bd'
+                ? 'বর্তমান অবস্থা'
+                : 'Current Status'
+            }}
+          </p>
+          <v-card class="pa-2 w-100">
+            <div class="current-weather-information px-5">
+              <div>
+                <icon-text
+                  :content="{
+                    en: `Wind speed ${weather.current.wind.speed} km/h from the direction of ${weather.current.wind.direction}`,
+                    bd: `${weather.current.wind.direction} দিক থেকে ${weather.current.wind.speed} কিলোমিটার বেগে বাতাস বেয়ে চলছে`,
+                    jp: `時速${weather.current.wind.speed}キロメートル、${weather.current.wind.direction}から方向`,
+                  }"
+                  icon="fas fa-wind"
+                />
+              </div>
+              <div>
+                <icon-text
+                  :content="{
+                    en: `${weather.current.cloud}&percnt; of the sky is cloudy`,
+                    bd: `${weather.current.cloud}&percnt; আকাশ মেঘাচ্ছন্ন হয়ে আছে`,
+                    jp: `空の${weather.current.cloud}&percnt;が曇っています`,
+                  }"
+                  icon="fas fa-cloud"
+                />
+              </div>
+              <div>
+                <icon-text
+                  :content="{
+                    en: `${weather.current.pressure} millibar pressure in the air`,
+                    bd: `বাতাসে চাপ ${weather.current.pressure} মিলিবার`,
+                    jp: `空気圧${weather.current.pressure}ミリバール`,
+                  }"
+                  icon="fas fa-atom"
+                />
+              </div>
+            </div>
+          </v-card>
+        </v-row>
+
+        <hr class="w-100 my-5" style="opacity: 0.4" />
+
         <v-row class="my-10 p-all-1rem">
           <line-chart
             :height="200"
@@ -214,6 +376,7 @@ import { useToast } from 'vue-toastification';
 import { useStore } from 'vuex';
 import generateChartDataset from '../../../utils/chart-dataset';
 import RemoveButtonDialog from '../buttons/RemoveButtonDialog.vue';
+import IconText from '../icon-text/IconText.vue';
 import LineChart from '../temp-chart/LineChart.vue';
 import Temperature from './Temperature.vue';
 import WeatherCardHeaderInfo from './WeatherCardHeaderInfo.vue';
@@ -354,6 +517,13 @@ const getConvertedTime = (time, lang) => {
 </script>
 
 <style scoped>
+.current-weather-information {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
 .test {
   display: flex;
   align-items: center;
