@@ -124,7 +124,12 @@ const cityModule = {
       return state.cities;
     },
     getAllCitiesName(state) {
-      return ['Dhaka', 'Miyazaki', ...Object.keys(state.cities)];
+      return [
+        'Dhaka',
+        'Miyazaki',
+        'Miyazaki-Shi',
+        ...Object.keys(state.cities),
+      ];
     },
   },
 };
