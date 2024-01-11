@@ -215,7 +215,7 @@
           </div>
         </v-row>
 
-        <v-row class="py-2 px-5">
+        <v-row class="py-2 px-5" v-if="active.current.airQuality">
           <p class="mb-3 font-weight-bold text-primary">
             {{
               currentLanguage === 'jp'

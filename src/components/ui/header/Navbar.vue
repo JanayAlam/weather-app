@@ -8,13 +8,12 @@
       <v-container fluid class="px-10">
         <v-row no-gutters align="center">
           <v-col cols="12" md="4" align="start">
-            <img
-              :src="theme.global.current.value.dark ? darkLogo : lightLogo"
-              width="150px"
-              style="opacity: 1"
-              alt="kodensya weather logo"
-              aria-labelledby="application's logo"
-            />
+            <span
+              style="color: theme.global.current.value.dark ? #fff : #333;"
+              class="brand"
+            >
+              Weather App
+            </span>
           </v-col>
           <v-col cols="12" md="8" align="end">
             <div class="icon-buttons">
@@ -45,8 +44,6 @@
 
 <script setup>
 import { useTheme } from 'vuetify';
-import darkLogo from '../../../assets/logo-dark.png';
-import lightLogo from '../../../assets/logo-light.png';
 import { setTheme } from '../../../utils/theme-local-storage';
 import IconButton from '../../shared/buttons/IconButton.vue';
 import LanguageSwitcher from './LanguageSwitcher.vue';
@@ -62,17 +59,9 @@ const toggleTheme = () => {
 </script>
 
 <style scoped>
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.logo-container-text {
-  font-size: 1.2rem;
+.brand {
   font-weight: bold;
-
-  /* margin-left: -100px; */
+  font-size: 1.1rem;
 }
 
 .app-bar-light {
