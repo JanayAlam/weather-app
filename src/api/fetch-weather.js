@@ -106,16 +106,18 @@ const getWeatherInfo = async (locationStr, date = new Date()) => {
           moonPhase: ele.astro.moon_phase,
           moonIllumination: ele.astro.moon_illumination,
         },
-        airQuality: {
-          co: ele.day.air_quality.co,
-          no2: ele.day.air_quality.no2,
-          o3: ele.day.air_quality.o3,
-          so2: ele.day.air_quality.so2,
-          pm2_5: ele.day.air_quality.pm2_5,
-          pm10: ele.day.air_quality.pm10,
-          usEpaIndex: ele.day.air_quality['us-epa-index'],
-          gbDefraIndex: ele.day.air_quality['gb-defra-index'],
-        },
+        airQuality: ele.day.air_quality
+          ? {
+              co: ele.day.air_quality.co,
+              no2: ele.day.air_quality.no2,
+              o3: ele.day.air_quality.o3,
+              so2: ele.day.air_quality.so2,
+              pm2_5: ele.day.air_quality.pm2_5,
+              pm10: ele.day.air_quality.pm10,
+              usEpaIndex: ele.day.air_quality['us-epa-index'],
+              gbDefraIndex: ele.day.air_quality['gb-defra-index'],
+            }
+          : undefined,
       };
     });
 
