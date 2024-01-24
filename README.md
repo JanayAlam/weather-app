@@ -29,7 +29,7 @@ Technology Used: **Vue**, **Weather API**, **Vuetify**, etc.
 Download the repository by-
 
 ```bash
-git clone https://github.com/JanayAlam/weather-app.git weather-app
+git clone git@github.com:JanayAlam/weather-app.git
 cd weather-app
 ```
 
