@@ -31,5 +31,6 @@
     "jsdom": "^23.0.1",
     "vite": "^5.0.8",
     "vitest": "^1.0.4"
-  }
+  },
+  "packageManager": "yarn@4.1.0"
 }

@@ -1,45 +1,55 @@
+
 # Weather App
 
-A web system that displays the weather, temperature, and humidity of Japan (Miyazaki) and Bangladesh (Dhaka) on the screen. User can add other city as well. They can search any city's weather.
+A web system that displays the weather information of Japan (Miyazaki) and Bangladesh (Dhaka) on the screen. User can add other cities as well. They can search any city's weather and pin those on the homepage.
 
-Technology Used: **Vue**, **Weather API**, **Vuetify**, etc.
 
-## Requirements Analysis
+## Tech Stack
 
-- Shows the weather, temperature, and humidity of Miyazaki and Dhaka. And a user can add a new city if they want. The additional cities are removable but the Miyazaki and Dhaka is fixed. That means a user cannot remove Miyazaki and Dhaka from the web view.
+**Client:** Vue, VeuX, Vuetify
 
-- On top of the application, there will be short temperature info about the current location. On the right side of the navigation bar, there will be a search bar. Users can search for any city’s temperature.
+**External API:** [Weather API](https://www.weatherapi.com)
 
-- The website must have a dark mode and Japanese language Support.
+**Testing:** Vitest
 
-- Data caching should be implemented.
+## Features
 
-- There will a feature to compare two or multiple city’s weather.
+- Light/dark mode toggle
+- Multiple language feature
+- Keyboard interaction
+- Data caching for optimal network call
+- Data storing in local storage
+- Live local clock
+- Fetching weather information of any city
+- Pinning favorite cities on the homepage
 
-- The system will have a caching system. Also, a user can reload the temperature by clicking a button.
+## Environment Variables
 
-- The website must be controllable by only the keyboard.
+To run this project, you will need to add the following environment variables to your `.env` file.
 
-- The website must be readable by the screen reader.
+- `VITE_API_KEY`: Get a API from [Weather API](https://www.weatherapi.com) and store that key in this variable.
 
-- All the components must be tested.
+## Run Locally
 
-## How to run
-
-Download the repository by-
+- Clone the project
 
 ```bash
-git clone git@github.com:JanayAlam/weather-app.git
+git clone git@github.com:JanayAlam/weather-app.git weather-app
+```
+
+- Go to the project directory
+
+```bash
 cd weather-app
 ```
 
-Install packages by-
+- Install dependencies
 
 ```bash
-yarn
+yarn install
 ```
 
-Configure the environmental variables by-
+- Configure the environmental variables
 
 ```bash
 cp default.env .env
@@ -47,12 +57,51 @@ cp default.env .env
 
 Then replace the `VITE_API_KEY`'s value `YOUR_WEATHER_API_KEY` with your [Weather API](https://www.weatherapi.com)'s API key.
 
-Run the project by-
+- Start the server
 
 ```bash
 yarn run dev
 ```
 
-## Dependencies
+## Running Tests
 
-- Weather API: https://www.weatherapi.com
+To run tests, run the following command
+
+```bash
+yarn run test
+```
+
+
+## Demo
+
+**Light and Dark theme:** Users can toggle between dark and light theme mode.
+
+![Light and Dark Theme](./assets/theme.gif)
+
+**Multiple language feature:** Users can switch to English, Bengali, and Japanese language.
+
+![Multiple Language Feature](./assets/multiple-language-feature.gif)
+
+**Weather information:** Users can see the weather information of any city both in Celsius and Fahrenheit scale in detail. There is a chart showing how can be the temperature in the next seven days.
+
+![Weather Information](./assets/weather-information.gif)
+
+**Weather forecasts:** Users can see the weather forecasts values in detail.
+
+![Weather Forecasts](./assets/weather-forecasts.gif)
+
+**Search cities:** Users can search any city to know its weather information.
+
+![Search Cities](./assets/search-cities.gif)
+
+**Keyboard interaction and pinning cities on the homepage:** Users can open the search bar by clicking `ctrl+k` and pin cities on the homepage from the details page.
+
+![Search Cities and Pinning on the Homepage](./assets/pin-cities.gif)
+
+**Remove pinned cities from the homepage:** Users can remove pinned cities from the homepage.
+
+![Remove Pinned Cities](./assets/remove-cities.gif)
+
+**Data storing:** All the information is stored in the local storage. So, hard refresh will not delete the states.
+
+![Hard Reload](./assets/hard-reload.gif)
